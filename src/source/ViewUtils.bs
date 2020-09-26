@@ -1,0 +1,29 @@
+import "pkg:/source/roku_modules/mc/Utils.brs"
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+
+function findNodes(nodeIds) as void
+  if (type(nodeIds) = "roArray")
+    for each nodeId in nodeIds
+      node = m.top.findNode(nodeId)
+      if (node <> invalid)
+        m[nodeId] = node
+      else
+        log_logWarn("could not find node with id {0}", nodeId)
+      end if
+    end for
+  end if
+end function
+
+function getFirstParentWithType(node, parentType)
+  currentNode = node
+
+  while currentNode <> invalid
+
+    if currentNode.subType() = parentType
+      return currentNode
+    end if
+
+    currentNode = currentNode.getParent()
+  end while
+  return invalid
+end function

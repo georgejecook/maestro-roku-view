@@ -1,0 +1,174 @@
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+import "pkg:/components/mixin/FocusMixin.bs"
+import "pkg:/components/mixin/KeyMixin.bs"
+import "pkg:/source/roku_modules/mc/Utils.brs"
+import "pkg:/source/ViewUtils.bs"
+
+' /**
+'  * @module BaseView
+'  * @description BaseView class for all controls or screens
+'  */
+
+function init() as void
+  m.modelLocator = m.global.modelLocator
+  focusMixinInit()
+  keyPressMixinInit()
+  
+  m.top.observeField("_styleText", "onStyleTextChange")
+  m.top.observeField("_style", "onStyleChange")
+  
+  'TODO - guard these observers to not include in prod builds
+  m.top.observeField("_debugM", "onDebugMChange")
+  m.top.observeField("_updateStyle", "onUpdateStyleChange")
+  
+  m.wasShown = false
+  m.isKeyPressLocked = false
+end function
+
+function onDebugMChange()
+  log_logInfo("dumping m for debugging purposes")
+  MU.setOrAddNodeField(m.top, "_m", m)
+  MU.setOrAddNodeField(m.top, "_vm", m.vm)
+end function
+
+
+' /**
+'  * @member intializeView
+'  * @memberof module:BaseView
+'  * @instance
+'  * @function
+'  * @description initializes the passed in View
+'  * @param {BaseView} the view to initialize
+'  */
+function initializeView(view, args = invalid) as void
+  view@._initialize(args)
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'** VISIBILITY
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function onVisibleChange()
+  'TODO - does the nav controller handle this in future?
+  log_logInfo(m.top.id, "onVisibleChange visible ", m.top.visible)
+  if m.top.visible
+    _onShow(invalid)
+  else
+    _onHide(invalid)
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ Lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function applyStyle()
+  styles = m.modelLocator.styles
+  localizations = m.modelLocator.localizations
+  assets = m.modelLocator.assets
+  _applyStyle(styles, localizations, assets)
+end function
+
+function _onShow(args) as void
+  ' ? ">> base VIEW _ONSHOW " ; m.top.id ; " isShown " ; m.top.isShown
+  oldIsShowing = m.top.isShown
+  if not m.top.isInitialized
+    return
+  end if
+  m.top.isShown = true
+  
+  if not m.wasShown
+    onFirstShow()
+    m.wasShown = true
+    
+    if m.vm <> invalid and m.vm.onFirstShow <> invalid
+      m.vm.onFirstShow()
+    end if
+    
+  end if
+  
+  if oldIsShowing <> m.top.isShown
+    onShow()
+    
+    if m.vm <> invalid and m.vm.onShow <> invalid
+      m.vm.onShow()
+    end if
+    
+  end if
+end function
+
+function _onHide(args)
+  if m.wasShown
+    m.top.isShown = false
+    onHide()
+    
+    if m.vm <> invalid and m.vm.onHide <> invalid
+      m.vm.onHide()
+    end if
+    
+  else
+    log_logWarn("onHide called before show: ignoring")
+  end if
+end function
+
+function _initialize(args = invalid)
+  log_logMethod("initialize")
+  if not m.top.isInitialized
+    m.top.isInitialized = true
+    initialize(args)
+    applyStyle()
+    m.top.observeField("visible", "onVisibleChange")
+    if m.top.visible and not m.top.isShown
+      _onShow(invalid)
+    end if
+  else
+    log_logWarn("View was already initialized. Ignoring subsequent call ", m.top)
+  end if
+end function
+
+function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
+  return MU.callAAFunc(m.vm, funcName, p1, p2, p3) 
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ styling support
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function onUpdateStyleChange()
+  'override me
+  style = StyleBuilderUtils.getUpdatedControlStyle(m.top, true, true, true)
+  style.comp = m.top.getSubType()
+  m.top._styleText = formatJson(style)
+end function
+
+function onStyleTextChange()
+  m.top._style = parseJson(m.top._styleText)
+end function
+
+function onStyleChange()
+  log_logInfo("my style changed", m.top.subType())
+  if m.top._style <> invalid
+    StyleUtils.applyStyle(m.top._style.normal, m.top)
+  end if
+end function
+
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+'++ abstract lifecycle methods
+'+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+function initialize(args)
+end function
+
+function _applyStyle(styles, localizations, assets)
+  'override me ; but this function should appear at the top of the script file, 
+  ' with the init method, for readability
+end function
+
+function onFirstShow()
+end function
+
+function onShow()
+end function
+
+function onHide()
+end function
