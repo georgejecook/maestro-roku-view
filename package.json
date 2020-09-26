@@ -1,6 +1,6 @@
 {
   "name": "maestro-roku-view",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A development platform for building roku channels in brighterscript. View Library",
   "directories": {
     "doc": "docs"
@@ -64,7 +64,7 @@
     "packageRootDir": "dist"
   },
   "scripts": {
-    "build": "export TS_NODE_COMPILER_OPTIONS='{\"incremental\":true, \"allowJs\":false}' && export TS_NODE_TRANSPILE_ONLY=true && gulp compile",
+    "build": "gulp compile",
   "test": "npm run build"
   }
 }
