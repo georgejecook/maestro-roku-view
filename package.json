@@ -1,6 +1,6 @@
 {
   "name": "maestro-roku-view",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "A development platform for building roku channels in brighterscript. View Library",
   "directories": {
     "doc": "docs"
@@ -9,8 +9,8 @@
     "dist/**/!(manifest)*"
   ],
   "dependencies": {
-    "log": "maestro-roku-log",
-    "mc": "maestro-roku-core"
+    "log": "npm:maestro-roku-log@latest",
+    "mc": "npm:maestro-roku-core@latest"
   },
   "devDependencies": {
     "brighterscript": "^0.15.0",
