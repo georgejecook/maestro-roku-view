@@ -17,7 +17,7 @@ function push(view)
   if (navController <> invalid)
     navController@.push(view)
   else
-    log_logError("Push failed - there is no navcontroller on ", m.top)
+    m.logError("Push failed - there is no navcontroller on ", m.top)
   end if
 end function
 
@@ -27,7 +27,7 @@ function pop() as object
   if (navController <> invalid)
     return navController@.pop()
   else
-    log_logError("Pop failed - there is no navcontroller on ", m.top)
+    m.logError("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
@@ -37,24 +37,24 @@ function replaceNavControllerScreen(targetScreen)
   if (navController <> invalid)
     navController@.replace(targetScreen)
   else
-    log_logError("Pop failed - there is no navcontroller on ", m.top)
+    m.logError("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 
 function resetNavControllerToRoot()
-  log_logMethod("resetNavControllerToRoot." + m.top.id)
+  m.logMethod("resetNavControllerToRoot." + m.top.id)
   resetNavController(invalid, 0)
 end function
 
 function resetNavController(newFirstScreen = invalid, endIndex = -1)
-  log_logMethod("resetNavController." + m.top.id)
+  m.logMethod("resetNavController." + m.top.id)
   navController = getNavController()
   
   if (navController <> invalid)
     navController@.reset(newFirstScreen, endIndex)
   else
-    log_logError("Pop failed - there is no navcontroller on ", m.top)
+    m.logError("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
@@ -86,7 +86,7 @@ end function
 '  * @returns {BaseScreen} a screen considered as the top of this graph
 '  */
 function _getTopScreen(args = invalid)
-  log_logMethod("_getTopScreen")
+  m.logMethod("_getTopScreen")
   topScreen = getTopScreen()
   navController = getNavController()
   if topScreen = invalid

@@ -1,19 +1,19 @@
 import "pkg:/source/roku_modules/log/LogMixin.brs"
 
 function init()
-  log_registerLogger("MultiContainer", true)
+  log_registerLogger("mc_tiContainer", true)
   m.layoutGroup = m.top.findNode("container_layoutGroup")
   m.updateTimer = m.top.findNode("container_updateTimer")
   m.animation = m.top.findNode("container_animation")
   m.interpolator = m.top.findNode("container_interpolator")
   m.previousY = 0
 
-  m.top.observeField("index", "onIndexChange")
-  m.top.observeField("size", "onSizeChange")
-  m.top.observeField("children", "onChildrenChange")
-  m.top.observeField("needsRecalulating", "onNeedsRecalcuatingChange")
-  m.top.observeField("yOffsets", "onIndexChange")
-  m.updateTimer.observeField("fire", "onNeedsRecalcuatingChange")
+  m.top.observeField("index", mc_getFunctionName(onIndexChange))
+  m.top.observeField("size", mc_getFunctionName(onSizeChange))
+  m.top.observeField("children", mc_getFunctionName(onChildrenChange))
+  m.top.observeField("needsRecalulating", mc_getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeField("yOffsets", mc_getFunctionName(onIndexChange))
+  m.updateTimer.observeField("fire", mc_getFunctionName(onNeedsRecalcuatingChange))
   m.previousCurrFocusRow = 1
   m.isFloatingFocusOffsetApplied = false
   m.rowListFloatingFocusPositionOffset = 0
@@ -36,7 +36,7 @@ function updateChildren(newChildren = invalid)
     if child.id <> "container_layoutGroup" and child.id <> "container_animation" and child.id <> "container_updateTimer"
       children.push(child)
       if child.doesExist("currFocusRow")
-        child.observeField("currFocusRow", "onHeroOffsetChildCurrFocusRowChange")
+        child.observeField("currFocusRow", mc_getFunctionName(onHeroOffsetChildCurrFocusRowChange))
       end if
 
     end if
@@ -67,18 +67,18 @@ function onHeroOffsetChildCurrFocusRowChange(event)
     fixRowListPosition(node, direction, currFocusRow)
   end if
 
-  ' log_logVerbose("currFocus Row", currFocusRow, "node.itemFocused", node.itemFocused, "delta", delta, "direction", direction, "animationDirection", m.animationDirection)
+  ' m.logVerbose("currFocus Row", currFocusRow, "node.itemFocused", node.itemFocused, "delta", delta, "direction", direction, "animationDirection", m.animationDirection)
 
   if node.doesExist("isHeroOffsetApplied")
-    ' log_logInfo("currFocusChange", currFocusRow, "offsetRequired", node.isHeroOffsetApplied = true, "animationDirection", m.animationDirection)
+    ' m.logInfo("currFocusChange", currFocusRow, "offsetRequired", node.isHeroOffsetApplied = true, "animationDirection", m.animationDirection)
     if node.isHeroOffsetApplied = false and currFocusRow >= 0 and currFocusRow < 1 and direction = -1
       node.isHeroOffsetApplied = true
-      log_logVerbose("ADDING HERO")
+      m.logVerbose("ADDING HERO")
 
       moveToCurrentIndex()
 
     else if node.isHeroOffsetApplied = true and currFocusRow < 1 and direction = 1
-      log_logVerbose("REMOVING HERO")
+      m.logVerbose("REMOVING HERO")
       node.isHeroOffsetApplied = false
       moveToCurrentIndex()
     end if
@@ -126,11 +126,11 @@ function onChildrenChange()
 end function
 
 function onIndexChange()
-  log_logMethod("onIndexChange", m.top.index, "isAnimated", m.top.isAnimated)
+  m.logMethod("onIndexChange", m.top.index, "isAnimated", m.top.isAnimated)
   child = m.layoutGroup.getChild(m.top.index)
 
   if child = invalid
-    log_logWarn("tried to set index before the children were created")
+    m.logWarn("tried to set index before the children were created")
     return invalid
   end if
 
@@ -141,7 +141,7 @@ function onIndexChange()
     child.isHeroOffsetApplied = true
   end if
 
-  ' log_logVerbose("child.isHeroOffsetApplied", child.isHeroOffsetApplied)
+  ' m.logVerbose("child.isHeroOffsetApplied", child.isHeroOffsetApplied)
   moveToCurrentIndex()
 
   if m.top.isFocused or m.top.isChildFocused
@@ -158,7 +158,7 @@ function moveToCurrentIndex(forceNoAnimation = false)
     m.animationDirection = -1
   end if
 
-  ' log_logInfo("index", m.top.index, "new Y is", newY, "force no animation", forceNoAnimation, "animationDirection", m.animationDirection)
+  ' m.logInfo("index", m.top.index, "new Y is", newY, "force no animation", forceNoAnimation, "animationDirection", m.animationDirection)
 
   moveContentTo(m.previousY, newY) 
   m.previousY = newY
@@ -179,7 +179,7 @@ function moveContentTo(previousY, newY, forceNoAnimation = false)
     end if
 
   else
-    ' log_logInfo("moving with no animation")
+    ' m.logInfo("moving with no animation")
     m.layoutGroup.translation = [0, newY]
   end if
 
@@ -188,12 +188,12 @@ end function
 function getYOfIndex(index)
   y = 0
   currentOffset = 0
-  ' log_logVerbose("index", index)
+  ' m.logVerbose("index", index)
   child = m.layoutGroup.getchild(index)
 
   if child <> invalid and child.heroControl <> invalid and child.isHeroOffsetApplied
-    ' log_logVerbose("child is hero with offset applied")
-    ' log_logVerbose(">>> adding child hero height", child.heroControl.boundingRect().height)
+    ' m.logVerbose("child is hero with offset applied")
+    ' m.logVerbose(">>> adding child hero height", child.heroControl.boundingRect().height)
     currentOffset += - child.heroControl.boundingRect().height
   else 
     if index < m.top.yOffsets.count()
@@ -206,18 +206,18 @@ function getYOfIndex(index)
 
   end if
 
-  ' log_logVerbose(">> offsets", m.top.yOffsets)
+  ' m.logVerbose(">> offsets", m.top.yOffsets)
 
   for i = 0 to index - 1
-    ' log_logVerbose(">>> ", index, " currentOffset ", currentOffset)
+    ' m.logVerbose(">>> ", index, " currentOffset ", currentOffset)
 
     child = m.layoutGroup.getChild(i)
 
     if child <> invalid
-      ' log_logVerbose(" child height si ", child.boundingRect().height)
+      ' m.logVerbose(" child height si ", child.boundingRect().height)
       y += child.boundingRect().height
     else
-      ' log_logWarn("child of MultiContainer with index", i, "is invalid")
+      ' m.logWarn("child of mc_tiContainer with index", i, "is invalid")
     end if
   end for
 
@@ -226,7 +226,7 @@ function getYOfIndex(index)
 end function
 
 function onNeedsRecalcuatingChange()
-  log_logInfo("onNeedsRecalcuatingChange - recalcuating multi container")
+  m.logInfo("onNeedsRecalcuatingChange - recalcuating mc_ti container")
   y = 0
   heroControl = invalid
   m.rowListFloatingFocusPositionOffset = 0
@@ -236,9 +236,9 @@ function onNeedsRecalcuatingChange()
     child.translation = [0, y]
     y += child.boundingRect().height
 
-    MU.setOrAddNodeField(child, "heroControl", heroControl) 
-    MU.setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true) 
-    MU.setOrAddNodeField(child, "_multiContainer", m.top) 
+    mc_setOrAddNodeField(child, "heroControl", heroControl) 
+    mc_setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true) 
+    mc_setOrAddNodeField(child, "_mc_tiContainer", m.top) 
 
     if child.isHero = true
       heroControl = child
@@ -254,7 +254,7 @@ function onNeedsRecalcuatingChange()
 end function
 
 function onGainedFocus(isSelfFocused)
-  ' log_logMethod("onGainedFocus", isSelfFocused)
+  ' m.logMethod("onGainedFocus", isSelfFocused)
 
   if isSelfFocused
     ' onIndexChange()

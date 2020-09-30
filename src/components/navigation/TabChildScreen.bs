@@ -4,7 +4,7 @@
 
 function init()
   log_registerLogger("TabChildScreen")
-  log_logMethod("init")
+  m.logMethod("init")
   m.top.navController = m.top.findNode("navController")
   initializeView(m.top.navController)
   m.isFirstScreenCreated = false
@@ -15,7 +15,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function reset(args = invalid)
-  log_logMethod("reset")
+  m.logMethod("reset")
   resetNavControllerToRoot()
   
   if m.top.navController.currentView <> invalid
@@ -32,16 +32,16 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function createFirstScreen()
-  log_logMethod("createFirstScreen")
+  m.logMethod("createFirstScreen")
   if m.top.content <> invalid
     if m.top.content <> invalid
       push(m.top.content)
       m.isFirstScreenCreated = true
     else
-      log_logError("no screen ")
+      m.logError("no screen ")
     end if
   else
-    log_logError("content was invalid!")
+    m.logError("content was invalid!")
   end if
 end function
 
@@ -50,7 +50,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onKeyPressBack() as boolean
-  log_logMethod("onKeyPressBack")
+  m.logMethod("onKeyPressBack")
   
   if m.top.navController.numberOfViews > 1
     pop()
@@ -66,7 +66,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onShow()
-  log_logMethod("onShow")
+  m.logMethod("onShow")
 
   if m.isFirstScreenCreated
     reset()
@@ -77,13 +77,13 @@ function onShow()
 end function
 
 function onHide()
-  log_logMethod("onHide")
+  m.logMethod("onHide")
   m.top.navController.visible = false
   reset()
 end function
 
 function onGainedFocus(isSelfFocused)
-  ' log_logMethod("onGainedFocus ", isSelfFocused)
+  ' m.logMethod("onGainedFocus ", isSelfFocused)
   if isSelfFocused
     setFocus(m.top.navController)
   end if

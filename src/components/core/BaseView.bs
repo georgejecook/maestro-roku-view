@@ -1,4 +1,5 @@
 import "pkg:/source/roku_modules/log/LogMixin.brs"
+import "pkg:/source/roku_modules/mc/Utils.brs"
 import "pkg:/components/mixin/FocusMixin.bs"
 import "pkg:/components/mixin/KeyMixin.bs"
 import "pkg:/source/roku_modules/mc/Utils.brs"
@@ -10,25 +11,27 @@ import "pkg:/source/ViewUtils.bs"
 '  */
 
 function init() as void
-  m.modelLocator = m.global.modelLocator
+  log_registerLogger(m.top.subType())
+
+  if m.global._mIocContainer <> invalid
+    'TODO - I will probs import ioc into base view
+    'bs:disable-next-line
+    'mioc_initialize()
+  end if
   focusMixinInit()
   keyPressMixinInit()
-  
-  m.top.observeField("_styleText", "onStyleTextChange")
-  m.top.observeField("_style", "onStyleChange")
-  
+
   'TODO - guard these observers to not include in prod builds
-  m.top.observeField("_debugM", "onDebugMChange")
-  m.top.observeField("_updateStyle", "onUpdateStyleChange")
-  
+  m.top.observeField("_debugM", mc_getFunctionName(onDebugMChange))
+  m.top.observeField("_updateStyle", mc_getFunctionName(onUpdateStyleChange))
+
   m.wasShown = false
-  m.isKeyPressLocked = false
 end function
 
 function onDebugMChange()
-  log_logInfo("dumping m for debugging purposes")
-  MU.setOrAddNodeField(m.top, "_m", m)
-  MU.setOrAddNodeField(m.top, "_vm", m.vm)
+  m.logInfo("dumping m for debugging purposes")
+  mc_setOrAddNodeField(m.top, "_m", m)
+  mc_setOrAddNodeField(m.top, "_vm", m.vm)
 end function
 
 
@@ -50,7 +53,7 @@ end function
 
 function onVisibleChange()
   'TODO - does the nav controller handle this in future?
-  log_logInfo(m.top.id, "onVisibleChange visible ", m.top.visible)
+  m.logInfo(m.top.id, "onVisibleChange visible ", m.top.visible)
   if m.top.visible
     _onShow(invalid)
   else
@@ -62,13 +65,6 @@ end function
 '++ Lifecycle methods
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-function applyStyle()
-  styles = m.modelLocator.styles
-  localizations = m.modelLocator.localizations
-  assets = m.modelLocator.assets
-  _applyStyle(styles, localizations, assets)
-end function
-
 function _onShow(args) as void
   ' ? ">> base VIEW _ONSHOW " ; m.top.id ; " isShown " ; m.top.isShown
   oldIsShowing = m.top.isShown
@@ -76,58 +72,66 @@ function _onShow(args) as void
     return
   end if
   m.top.isShown = true
-  
+
   if not m.wasShown
-    onFirstShow()
+    if mc_isFunction(onFirstShow)
+      'bs:disable-next-line
+      onFirstShow()
+    end if
     m.wasShown = true
-    
+
     if m.vm <> invalid and m.vm.onFirstShow <> invalid
       m.vm.onFirstShow()
     end if
-    
+
   end if
-  
+
   if oldIsShowing <> m.top.isShown
-    onShow()
-    
+    if mc_isFunction(onShow)
+      'bs:disable-next-line
+      onShow()
+    end if
+
     if m.vm <> invalid and m.vm.onShow <> invalid
       m.vm.onShow()
     end if
-    
+
   end if
 end function
 
 function _onHide(args)
   if m.wasShown
     m.top.isShown = false
-    onHide()
-    
+    if mc_isFunction(onHide)
+      'bs:disable-next-line
+      onHide()
+    end if
+
     if m.vm <> invalid and m.vm.onHide <> invalid
       m.vm.onHide()
     end if
-    
+
   else
-    log_logWarn("onHide called before show: ignoring")
+    m.logWarn("onHide called before show: ignoring")
   end if
 end function
 
 function _initialize(args = invalid)
-  log_logMethod("initialize")
+  m.logMethod("initialize")
   if not m.top.isInitialized
     m.top.isInitialized = true
     initialize(args)
-    applyStyle()
-    m.top.observeField("visible", "onVisibleChange")
+    m.top.observeField("visible", mc_getFunctionName(onVisibleChange))
     if m.top.visible and not m.top.isShown
       _onShow(invalid)
     end if
   else
-    log_logWarn("View was already initialized. Ignoring subsequent call ", m.top)
+    m.logWarn("View was already initialized. Ignoring subsequent call ", m.top)
   end if
 end function
 
 function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
-  return MU.callAAFunc(m.vm, funcName, p1, p2, p3) 
+  return mc_callAAFunc(m.vm, funcName, p1, p2, p3) 
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -146,7 +150,7 @@ function onStyleTextChange()
 end function
 
 function onStyleChange()
-  log_logInfo("my style changed", m.top.subType())
+  m.logInfo("my style changed", m.top.subType())
   if m.top._style <> invalid
     StyleUtils.applyStyle(m.top._style.normal, m.top)
   end if
@@ -157,18 +161,4 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-end function
-
-function _applyStyle(styles, localizations, assets)
-  'override me ; but this function should appear at the top of the script file, 
-  ' with the init method, for readability
-end function
-
-function onFirstShow()
-end function
-
-function onShow()
-end function
-
-function onHide()
 end function

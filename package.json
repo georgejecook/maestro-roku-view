@@ -6,11 +6,12 @@
     "doc": "docs"
   },
   "files": [
-    "dist/**/!(manifest)*"
+    "dist/**/!(manifest)*",
+    "!roku_modules"
   ],
   "dependencies": {
-    "log": "npm:maestro-roku-log@^0.2.2",
-    "mc": "npm:maestro-roku-core@^0.2.5"
+    "log": "file:../roku-log",
+    "mc": "file:../maestro-roku-core"
   },
   "devDependencies": {
     "brighterscript": "^0.15.0",
@@ -42,10 +43,11 @@
   },
   "ropm": {
     "rootDir": "src",
-    "packageRootDir": "dist"
+    "packageRootDir": "dist",
+    "prefixMatching": "expanded"
   },
   "scripts": {
     "build": "npx bsc",
-    "test": "cd tests && ropm install && bsc"
+    "test": "cd tests && npx ropm copy && bsc --project ./bsconfig.json"
   }
 }

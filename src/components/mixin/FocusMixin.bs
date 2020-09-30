@@ -30,8 +30,8 @@ end function
 '  * @description creates required observers for a view. Call this from any view that uses FocusMixin (which does not extend `BaseView`)
 '  */
 function focusMixinInit()
-  m.top.observeField("isFocused", "onIsFocusedChange")
-  m.top.observeField("isChildFocused", "onIsChildFocusedChange")
+  m.top.observeField("isFocused", mc_getFunctionName(onIsFocusedChange))
+  m.top.observeField("isChildFocused", mc_getFunctionName(onIsChildFocusedChange))
 end function
 
 ' /**
@@ -71,14 +71,14 @@ end function
 '  * @function
 '  * @description toggles if the focus is locked. If the focus is locked, then any call to setFocus will not work.
 '  * @param {boolean} - isLocked
-'  * @param {string} - focusLockReason - the reason for locking - this will appear in log_logging output
+'  * @param {string} - focusLockReason - the reason for locking - this will appear in m.logging output
 '  */
 function setFocusLocked(node, focusLockReason = "")
   m.global.focusManager@.setFocusLocked(node, focusLockReason)
 end function
 
 function onIsFocusedChange()
-  ' log_logInfo("m.top.isFocused", m.top.isFocused, MU.dv(m.top))
+  ' m.logInfo("m.top.isFocused", m.top.isFocused, mc_dv(m.top))
   
   if m.top.isFocused
     onGainedFocus(true)
@@ -88,7 +88,7 @@ function onIsFocusedChange()
 end function
 
 function onIsChildFocusedChange()
-  ' log_logInfo("m.top.isChildFocused", m.top.isChildFocused, MU.dv(m.top))
+  ' m.logInfo("m.top.isChildFocused", m.top.isChildFocused, mc_dv(m.top))
   
   if m.top.isChildFocused
     onGainedFocus(false)
@@ -110,7 +110,7 @@ end function
 '  * @param {boolean} isSelfFocused - if true, then this is the control that is focused, if false, then it is one of the control's parents
 '  */
 function onGainedFocus(isSelfFocused)
-  log_logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
+  m.logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
   
   if isSelfFocused and m.vm <> invalid
 
@@ -133,7 +133,7 @@ end function
 '  * @description invoked when a control, loses focus
 '  */
 function onLostFocus()
-  log_logInfo("lost focus:", m.top.subType(), ".", m.top.id)
+  m.logInfo("lost focus:", m.top.subType(), ".", m.top.id)
   if m.vm <> invalid and m.vm.onLostFocus <> invalid
     m.vm.onLostFocus()
   end if

@@ -1,8 +1,9 @@
+import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init()
   
-  m.top.observeField("systemFont", "onSystemFontChange")
-  m.top.observeField("style", "onStyleChange")
+  m.top.observeField("systemFont", mc_getFunctionName(onSystemFontChange))
+  m.top.observeField("style", mc_getFunctionName(onStyleChange))
   onSystemFontChange()
 end function
 

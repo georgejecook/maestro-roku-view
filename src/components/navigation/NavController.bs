@@ -1,5 +1,5 @@
 function init()
-  log_logInfo("init")
+  m.logInfo("init")
   m.viewStack = []
   m.currentView = invalid
 end function
@@ -9,9 +9,9 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function push(view) as void
-  log_logMethod("push")
+  m.logMethod("push")
   if view = invalid
-    log_logWarn(" push invalid view passed in : ignoring")
+    m.logWarn(" push invalid view passed in : ignoring")
     return
   end if
   'we want to clear out the view's vis, so the initialize
@@ -23,7 +23,7 @@ function push(view) as void
     initializeView(view)
   end if
 
-  log_logInfo("pushing ", view.subType())
+  m.logInfo("pushing ", view.subType())
   prev = m.viewStack.Peek()
   m.viewStack.Push(view)
 
@@ -34,7 +34,7 @@ function push(view) as void
   if m.top.isAutoFocusEnabled and m.top.isInFocusChain()
     setFocus(view)
   end if
-  log_logInfo(view.subType(), " #views in stack", m.top.numberOfViews)
+  m.logInfo(view.subType(), " #views in stack", m.top.numberOfViews)
 
   'weird bug is causing the visible state to get shot
   if m.top.isShown
@@ -45,30 +45,30 @@ function push(view) as void
 end function
 
 function reset(newFirstScreen = invalid, endIndex = -1)
-  log_logInfo(" reset ", m.top.numberOfViews)
+  m.logInfo(" reset ", m.top.numberOfViews)
   if endIndex < -1
     endIndex = -1
   end if
-  log_logInfo("endIndex is", endIndex)
+  m.logInfo("endIndex is", endIndex)
   index = m.top.numberOfViews - 1
   while index > endIndex
-    log_logInfo("resetting index ", index)
+    m.logInfo("resetting index ", index)
     view = m.viewStack.Pop()
     if view <> invalid
       hideView(view)
       view.navController = invalid
       view@.onRemovedFromAggregateView(m.top)
     else
-      log_logInfo(" reset found invalid child")
+      m.logInfo(" reset found invalid child")
     end if
     index--
   end while
 
   if newFirstScreen <> invalid
-    log_logInfo("new first screen ", newFirstScreen.subType())
+    m.logInfo("new first screen ", newFirstScreen.subType())
     push(newFirstScreen)
   else if m.top.numberOfViews > 0
-    log_logInfo("there were views left on the stack after resetting ")
+    m.logInfo("there were views left on the stack after resetting ")
     showView(m.viewStack[m.top.numberOfViews - 1])
   end if
 
@@ -77,7 +77,7 @@ function reset(newFirstScreen = invalid, endIndex = -1)
 end function
 
 function pop(args) as object
-  log_logMethod("pop ", m.top.numberOfViews)
+  m.logMethod("pop ", m.top.numberOfViews)
   previousView = m.top.currentView
   if (previousView <> invalid)
     m.viewStack.Pop()
@@ -104,7 +104,7 @@ function pop(args) as object
 end function
 
 function replace(newView = invalid) as object
-  log_logMethod("replace ", m.top.numberOfViews)
+  m.logMethod("replace ", m.top.numberOfViews)
   previousView = m.top.currentView
   if (previousView <> invalid)
     m.viewStack.Pop()
@@ -154,6 +154,6 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function initialize(args)
-  log_logMethod("initialize(args)")
+  m.logMethod("initialize(args)")
   log_registerLogger("NC.(" + m.top.getParent().subType() + ")")
 end function

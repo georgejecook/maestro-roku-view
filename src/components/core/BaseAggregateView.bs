@@ -7,7 +7,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function showView(view)
-  log_logVerbose("showView")
+  m.logVerbose("showView")
   children = m.top.getChildren( - 1, 0)
   
   for each child in children
@@ -17,7 +17,7 @@ function showView(view)
   end for
   
   if view <> invalid
-    log_logMethod("view is valid. isShown", m.top.isShown, "view", view.id)
+    m.logMethod("view is valid. isShown", m.top.isShown, "view", view.id)
     
     m.top.AppendChild(view)
     m.top.currentView = view
@@ -45,34 +45,34 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onShow()
-  log_logVerbose("onShow", m.top.subType(), ".", m.top.id)
+  m.logVerbose("onShow", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
-    log_logInfo("setting view visible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
+    m.logInfo("setting view visible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = true
   else
-    log_logWarn("this aggregrate view has no currentView")
+    m.logWarn("this aggregrate view has no currentView")
   end if
 end function
 
 function onHide()
-  log_logVerbose("onHide", m.top.subType(), ".", m.top.id)
+  m.logVerbose("onHide", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
-    log_logInfo("setting view invisible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
+    m.logInfo("setting view invisible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = false
   else
-    log_logWarn("this aggregrate view has no currentView")
+    m.logWarn("this aggregrate view has no currentView")
   end if
 end function
 
 function onGainedFocus(isSelfFocused)
-  ' log_logVerbose("onGainedFocus", isSelfFocused)
+  ' m.logVerbose("onGainedFocus", isSelfFocused)
   
   if isSelfFocused
     if m.top.currentView <> invalid
-      ' log_logDebug("setting focus to view ", m.top.currentView.id)
+      ' m.logDebug("setting focus to view ", m.top.currentView.id)
       setFocus(m.top.currentView)
     else
-      log_logDebug("no current view when gaining focus")
+      m.logDebug("no current view when gaining focus")
     end if
   end if
 end function
