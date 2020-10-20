@@ -1,0 +1,12 @@
+
+function onStyleChange()
+  m.top.setFields(m.top.style)
+
+  'hack for annoying layout bug
+  if m.top.style.translation <> invalid
+    translation = m.top.style.translation
+    translation[0] += 21
+    m.top.translation = translation
+  end if
+end function
+

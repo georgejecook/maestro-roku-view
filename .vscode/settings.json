@@ -35,4 +35,13 @@
     ".history/**": true,
     "**/out/**": true,
   },
+  "jira-plugin.workingProject": "",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#551A8B",
+    "statusBar.debuggingBackground": "#551A8B",
+    "panelTitle.activeBorder": "#ff0000",
+    "activityBar.background": "#2E2D30",
+    "titleBar.activeBackground": "#403F43",
+    "titleBar.activeForeground": "#FAFAFA"
+  },
 }

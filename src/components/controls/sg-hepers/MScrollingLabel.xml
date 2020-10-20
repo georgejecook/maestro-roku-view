@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<component
+    name='MScrollingLabel'
+    extends='ScrollingLabel'>
+  <interface>
+    <field
+        id='style'
+        type='assocarray'
+        onChange='onStyleChange' />
+
+    <field
+        id='systemFont'
+        type='string'
+        value='Smallest, 21' />
+
+
+  </interface>
+</component>

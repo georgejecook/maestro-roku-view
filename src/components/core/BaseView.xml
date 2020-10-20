@@ -47,6 +47,7 @@
 
     <!-- specialist function to allow external communication with the view model of a component -->
     <function name = "callVMFunc" />
+
   </interface>
 
 </component>

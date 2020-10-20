@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<component
+    name='MMiniKeyboard'
+    extends='MiniKeyboard'>
+  <interface>
+    <field
+        id='style'
+        type='assocarray'
+        onChange='onStyleChange' />
+  </interface>
+</component>

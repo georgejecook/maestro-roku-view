@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<component
+    name='WhiteList'
+    extends='Group'>
+  <interface>
+    <function name='onKeyPressDown' />
+    <function name='onKeyPressUp' />
+    <function name='onKeyPressLeft' />
+    <function name='onKeyPressRight' />
+    <function name='onKeyPressOK' />
+    <function name='onKeyPressBack' />
+    <function name='onKeyPressOption' />
+    <function name='onKeyPressPlay' />
+    <function name='onGainedFocus' />
+    <function name='onLostFocus' />
+  </interface>
+  <children>
+  </children>
+</component>
