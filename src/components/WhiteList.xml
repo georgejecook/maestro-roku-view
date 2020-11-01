@@ -13,6 +13,23 @@
     <function name='onKeyPressPlay' />
     <function name='onGainedFocus' />
     <function name='onLostFocus' />
+    <function name='initialize' />
+    <function name='onFirstShow' />
+    <function name='onShow' />
+    <function name='onHide' />
+    <function name='onAddedToAggregrateView' />
+    <function name='onRemovedFromAggregrateView' />
+    <function name='onWillEnter' />
+    <function name='onWillExit' />
+    <function name='onDidEnter' />
+    <function name='onDidExit' />
+    <function name='onWillGainFocus' />
+    <function name='onWillLoseFocus' />
+    <function name='onDidGainFocus' />
+    <function name='onDidLoseFocus' />
+    <function name='onGainingFocus' />
+    <function name='onLosingFocus' />
+  
   </interface>
   <children>
   </children>

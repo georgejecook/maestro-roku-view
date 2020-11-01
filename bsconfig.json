@@ -15,5 +15,6 @@
         1107
       ]
     }
-  ]
+  ],
+  "emitDefinitions": false
 }

@@ -14,8 +14,7 @@
     "mc": "file:../maestro-roku-core"
   },
   "devDependencies": {
-    "brighterscript": "^0.15.0",
-    "ropm": "^0.5.0"
+    "brighterscript": "file:../../vsc/brighterscript"
   },
   "repository": {
     "type": "git",
