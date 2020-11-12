@@ -1,9 +1,9 @@
 import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init()
-  
-  m.top.observeField("systemFont", mc_getFunctionName(onSystemFontChange))
-  m.top.observeField("style", mc_getFunctionName(onStyleChange))
+
+  m.top.observeField("systemFont", mc.getFunctionName(onSystemFontChange))
+  m.top.observeField("style", mc.getFunctionName(onStyleChange))
   onSystemFontChange()
 end function
 
@@ -14,7 +14,7 @@ function onSystemFontChange()
     if parts <> invalid and parts.count() > 0
       m.top.font = "font:" + parts[0] + "SystemFont"
     end if
-    
+
     if parts.count() > 1 
       if m.top.font <> invalid
         m.top.font.size = parts[1].toInt()

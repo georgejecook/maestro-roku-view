@@ -12,9 +12,10 @@
     {
       "src": "**/roku_modules/**/*.*",
       "codes": [
-        1107
+        1107,
+        1013
       ]
     }
   ],
-  "emitDefinitions": false
+  "emitDefinitions": true
 }

@@ -8,7 +8,7 @@ import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init() as void
   log_registerLogger("FocusManager")
-  m.top.observeField("_debugM", mc_getFunctionName(onDebugMChange))
+  m.top.observeField("_debugM", mc.getFunctionName(onDebugMChange))
   m.focusTimer = m.top.findNode("focusTimer")
   m.wasShown = false
   m.isKeyPressLocked = false
@@ -159,7 +159,7 @@ end function
 
 function isValid(node)
 
-  if mc_isUndefined(node)
+  if mc.isUndefined(node)
     m.logError("asked to focus on undefined node")
     return false
   else if node = invalid

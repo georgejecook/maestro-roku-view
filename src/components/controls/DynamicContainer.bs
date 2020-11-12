@@ -4,13 +4,13 @@ function init()
 end function
 
 function setNextView(nextView) as void
-  m.logInfo("onNextViewchange", mc_dv(m.top), "nextView", mc_dv(nextView))
+  m.logInfo("onNextViewchange", mc.dv(m.top), "nextView", mc.dv(nextView))
   currentView = m.top.currentView
   if currentView <> invalid and currentView.isSamenode(nextView)
     m.logInfo("ignoring update to same view - this should not happen")
     return
   end if
-  
+
   if currentView <> invalid
     m.logInfo("hiding the current view", currentView.subType(), ".", currentView.id)
     hideView(currentView)
@@ -18,7 +18,7 @@ function setNextView(nextView) as void
     currentView.isDisplayedInDynamicContainer = false
     currentView = invalid
   end if
-  
+
   if nextView <> invalid
     m.logInfo("has a new nextView - showing it now")
     m.top.currentView = nextView
@@ -26,22 +26,22 @@ function setNextView(nextView) as void
     nextView.isShown = false
     nextView.isDisplayedInDynamicContainer = true
     showView(nextView)
-    
+
     if not nextView.isInitialized
       initializeView(nextView)
     end if
-    
+
     nextView@.onAddedToAggregateView(m.top)
-    
+
     if m.top.isAutoFocusEnabled and m.top.isFocused
       setFocus(nextView)
     end if
-    
+
     'weird bug is causing the visible state to get shot
     if m.top.isShown
       nextView.visible = true
     end if
-    
+
   else
     m.logInfo("no currentView")
   end if

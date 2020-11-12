@@ -22,16 +22,16 @@ function init() as void
   keyPressMixinInit()
 
   'TODO - guard these observers to not include in prod builds
-  m.top.observeField("_debugM", mc_getFunctionName(onDebugMChange))
-  m.top.observeField("_updateStyle", mc_getFunctionName(onUpdateStyleChange))
+  m.top.observeField("_debugM", mc.getFunctionName(onDebugMChange))
+  m.top.observeField("_updateStyle", mc.getFunctionName(onUpdateStyleChange))
 
   m.wasShown = false
 end function
 
 function onDebugMChange()
   m.logInfo("dumping m for debugging purposes")
-  mc_setOrAddNodeField(m.top, "_m", m)
-  mc_setOrAddNodeField(m.top, "_vm", m.vm)
+  mc.setOrAddNodeField(m.top, "_m", m)
+  mc.setOrAddNodeField(m.top, "_vm", m.vm)
 end function
 
 
@@ -74,7 +74,7 @@ function _onShow(args) as void
   m.top.isShown = true
 
   if not m.wasShown
-    if mc_isFunction(onFirstShow)
+    if mc.isFunction(onFirstShow)
       'bs:disable-next-line
       onFirstShow()
     end if
@@ -87,7 +87,7 @@ function _onShow(args) as void
   end if
 
   if oldIsShowing <> m.top.isShown
-    if mc_isFunction(onShow)
+    if mc.isFunction(onShow)
       'bs:disable-next-line
       onShow()
     end if
@@ -102,7 +102,7 @@ end function
 function _onHide(args)
   if m.wasShown
     m.top.isShown = false
-    if mc_isFunction(onHide)
+    if mc.isFunction(onHide)
       'bs:disable-next-line
       onHide()
     end if
@@ -121,7 +121,7 @@ function _initialize(args = invalid)
   if not m.top.isInitialized
     m.top.isInitialized = true
     initialize(args)
-    m.top.observeField("visible", mc_getFunctionName(onVisibleChange))
+    m.top.observeField("visible", mc.getFunctionName(onVisibleChange))
     if m.top.visible and not m.top.isShown
       _onShow(invalid)
     end if
@@ -131,7 +131,7 @@ function _initialize(args = invalid)
 end function
 
 function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
-  return mc_callAAFunc(m.vm, funcName, p1, p2, p3) 
+  return mc.callAAFunc(m.vm, funcName, p1, p2, p3) 
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

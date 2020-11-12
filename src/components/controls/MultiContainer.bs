@@ -1,19 +1,19 @@
 import "pkg:/source/roku_modules/log/LogMixin.brs"
 
 function init()
-  log_registerLogger("mc_tiContainer", true)
+  log_registerLogger("mc.tiContainer", true)
   m.layoutGroup = m.top.findNode("container_layoutGroup")
   m.updateTimer = m.top.findNode("container_updateTimer")
   m.animation = m.top.findNode("container_animation")
   m.interpolator = m.top.findNode("container_interpolator")
   m.previousY = 0
 
-  m.top.observeField("index", mc_getFunctionName(onIndexChange))
-  m.top.observeField("size", mc_getFunctionName(onSizeChange))
-  m.top.observeField("children", mc_getFunctionName(onChildrenChange))
-  m.top.observeField("needsRecalulating", mc_getFunctionName(onNeedsRecalcuatingChange))
-  m.top.observeField("yOffsets", mc_getFunctionName(onIndexChange))
-  m.updateTimer.observeField("fire", mc_getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeField("index", mc.getFunctionName(onIndexChange))
+  m.top.observeField("size", mc.getFunctionName(onSizeChange))
+  m.top.observeField("children", mc.getFunctionName(onChildrenChange))
+  m.top.observeField("needsRecalulating", mc.getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeField("yOffsets", mc.getFunctionName(onIndexChange))
+  m.updateTimer.observeField("fire", mc.getFunctionName(onNeedsRecalcuatingChange))
   m.previousCurrFocusRow = 1
   m.isFloatingFocusOffsetApplied = false
   m.rowListFloatingFocusPositionOffset = 0
@@ -36,7 +36,7 @@ function updateChildren(newChildren = invalid)
     if child.id <> "container_layoutGroup" and child.id <> "container_animation" and child.id <> "container_updateTimer"
       children.push(child)
       if child.doesExist("currFocusRow")
-        child.observeField("currFocusRow", mc_getFunctionName(onHeroOffsetChildCurrFocusRowChange))
+        child.observeField("currFocusRow", mc.getFunctionName(onHeroOffsetChildCurrFocusRowChange))
       end if
 
     end if
@@ -217,7 +217,7 @@ function getYOfIndex(index)
       ' m.logVerbose(" child height si ", child.boundingRect().height)
       y += child.boundingRect().height
     else
-      ' m.logWarn("child of mc_tiContainer with index", i, "is invalid")
+      ' m.logWarn("child of mc.tiContainer with index", i, "is invalid")
     end if
   end for
 
@@ -226,7 +226,7 @@ function getYOfIndex(index)
 end function
 
 function onNeedsRecalcuatingChange()
-  m.logInfo("onNeedsRecalcuatingChange - recalcuating mc_ti container")
+  m.logInfo("onNeedsRecalcuatingChange - recalcuating mc.ti container")
   y = 0
   heroControl = invalid
   m.rowListFloatingFocusPositionOffset = 0
@@ -236,9 +236,9 @@ function onNeedsRecalcuatingChange()
     child.translation = [0, y]
     y += child.boundingRect().height
 
-    mc_setOrAddNodeField(child, "heroControl", heroControl) 
-    mc_setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true) 
-    mc_setOrAddNodeField(child, "_mc_tiContainer", m.top) 
+    mc.setOrAddNodeField(child, "heroControl", heroControl) 
+    mc.setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true) 
+    mc.setOrAddNodeField(child, "_mc.tiContainer", m.top) 
 
     if child.isHero = true
       heroControl = child

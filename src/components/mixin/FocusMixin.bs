@@ -30,8 +30,8 @@ end function
 '  * @description creates required observers for a view. Call this from any view that uses FocusMixin (which does not extend `BaseView`)
 '  */
 function focusMixinInit()
-  m.top.observeField("isFocused", mc_getFunctionName(onIsFocusedChange))
-  m.top.observeField("isChildFocused", mc_getFunctionName(onIsChildFocusedChange))
+  m.top.observeField("isFocused", mc.getFunctionName(onIsFocusedChange))
+  m.top.observeField("isChildFocused", mc.getFunctionName(onIsChildFocusedChange))
 end function
 
 ' /**
@@ -78,8 +78,8 @@ function setFocusLocked(node, focusLockReason = "")
 end function
 
 function onIsFocusedChange()
-  ' m.logInfo("m.top.isFocused", m.top.isFocused, mc_dv(m.top))
-  
+  ' m.logInfo("m.top.isFocused", m.top.isFocused, mc.dv(m.top))
+
   if m.top.isFocused
     onGainedFocus(true)
   else
@@ -88,8 +88,8 @@ function onIsFocusedChange()
 end function
 
 function onIsChildFocusedChange()
-  ' m.logInfo("m.top.isChildFocused", m.top.isChildFocused, mc_dv(m.top))
-  
+  ' m.logInfo("m.top.isChildFocused", m.top.isChildFocused, mc.dv(m.top))
+
   if m.top.isChildFocused
     onGainedFocus(false)
   else
@@ -111,17 +111,17 @@ end function
 '  */
 function onGainedFocus(isSelfFocused)
   m.logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
-  
+
   if isSelfFocused and m.vm <> invalid
 
     if m.vm.onGainedFocus <> invalid
       m.vm.onGainedFocus(isSelfFocused)
     end if
-    
+
     if MVMM.onFocusIdChange <> invalid
       MVMM.onFocusIdChange(m.vm.focusId) 
     end if
-    
+
   end if
 end function
 
