@@ -155,5 +155,5 @@ end function
 
 function initialize(args)
   m.logMethod("initialize(args)")
-  log_registerLogger("NC.(" + m.top.getParent().subType() + ")")
+  log.registerLogger("NC.(" + m.top.getParent().subType() + ")")
 end function

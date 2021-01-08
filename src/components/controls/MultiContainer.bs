@@ -1,7 +1,7 @@
 import "pkg:/source/roku_modules/log/LogMixin.brs"
 
 function init()
-  log_registerLogger("mc.tiContainer", true)
+  log.registerLogger("mc.tiContainer", true)
   m.layoutGroup = m.top.findNode("container_layoutGroup")
   m.updateTimer = m.top.findNode("container_updateTimer")
   m.animation = m.top.findNode("container_animation")

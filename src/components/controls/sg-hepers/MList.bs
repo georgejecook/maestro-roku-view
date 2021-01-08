@@ -1,6 +1,6 @@
 
 function init()
-  log_registerLogger("MList")
+  log.registerLogger("MList")
   m.rowList = m.top.findNode("rowList")
   m.rowList.observeField("rowItemFocused", "onRowListItemFocused")
   m.rowList.observeField("rowItemSelected", "onRowListItemSelected")

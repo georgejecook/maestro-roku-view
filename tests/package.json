@@ -6,7 +6,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "MV": "../"
+    "mv": "../"
   },
   "devDependencies": {},
   "repository": {

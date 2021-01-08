@@ -10,8 +10,9 @@
     "!roku_modules"
   ],
   "dependencies": {
-    "Log": "file:../../roku-log/roku-log",
-    "MC": "file:../maestro-roku-core"
+    "log": "file:../../roku-log/roku-log",
+    "mc": "file:../maestro-roku-core",
+    "mioc": "file:../maestro-roku-ioc"
   },
   "devDependencies": {
     "brighterscript": "^0.23.1",

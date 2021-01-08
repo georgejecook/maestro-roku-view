@@ -3,7 +3,7 @@
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function init()
-  log_registerLogger("TabChildScreen")
+  log.registerLogger("TabChildScreen")
   m.logMethod("init")
   m.top.navController = m.top.findNode("navController")
   initializeView(m.top.navController)

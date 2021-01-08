@@ -4,6 +4,7 @@ import "pkg:/components/mixin/FocusMixin.bs"
 import "pkg:/components/mixin/KeyMixin.bs"
 import "pkg:/source/roku_modules/mc/Utils.brs"
 import "pkg:/source/ViewUtils.bs"
+import "pkg:/source/roku_modules/mioc/MIOC.brs"
 
 ' /**
 '  * @module BaseView
@@ -11,11 +12,11 @@ import "pkg:/source/ViewUtils.bs"
 '  */
 
 function init() as void
-  Log.registerLogger(m.top.subType())
+  log.registerLogger(m.top.subType())
+  mioc.initialize()
   if m.global._mIocContainer <> invalid
     'TODO - I will probs import ioc into base view
     'bs:disable-next-line
-    'mioc_initialize()
   end if
   focusMixinInit()
   keyPressMixinInit()

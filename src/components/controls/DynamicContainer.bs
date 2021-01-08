@@ -1,6 +1,6 @@
 
 function init()
-  log_registerLogger("DynamicContainer")
+  log.registerLogger("DynamicContainer")
 end function
 
 function setNextView(nextView) as void
