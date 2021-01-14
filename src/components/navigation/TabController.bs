@@ -4,7 +4,6 @@
 '  */
 
 function init()
-  log.registerLogger("TabController")
   m.logMethod("init")
   m.top.currentItem = invalid
   m.top.isDestroyingChildViewsOnRemoval = false

@@ -12,7 +12,8 @@ import "pkg:/source/roku_modules/mioc/MIOC.brs"
 '  */
 
 function init() as void
-  log.registerLogger(m.top.subType())
+  ? "initizlizing with name "; getViewName()
+  log.registerLogger(getViewName())
   mioc.initialize()
   if m.global._mIocContainer <> invalid
     'TODO - I will probs import ioc into base view

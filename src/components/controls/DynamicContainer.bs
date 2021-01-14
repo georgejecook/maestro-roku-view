@@ -1,8 +1,4 @@
 
-function init()
-  log.registerLogger("DynamicContainer")
-end function
-
 function setNextView(nextView) as void
   m.logInfo("onNextViewchange", mc.dv(m.top), "nextView", mc.dv(nextView))
   currentView = m.top.currentView
