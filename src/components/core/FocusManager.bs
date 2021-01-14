@@ -7,8 +7,8 @@ import "pkg:/source/roku_modules/mc/Utils.brs"
 '  */
 
 function init() as void
-  log.registerLogger("FocusManager")
   m.top.observeField("_debugM", mc.getFunctionName(onDebugMChange))
+  log.registerLogger("FocusManager")
   m.focusTimer = m.top.findNode("focusTimer")
   m.wasShown = false
   m.isKeyPressLocked = false

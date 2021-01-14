@@ -12,12 +12,6 @@
       <field id="isInitialized"  type="boolean" value="false"/>
       <field id="_debugM"  type="boolean" alwaysNotify="true"/>
       
-      <!-- these are fields for style support -->
-      <field id="_style"  type="assocarray" />
-      <field id="_styledControlIds"  type="stringarray" value="[]"/>
-      <field id="_styleText"  type="string" alwaysNotify="true"/>
-      <field id="_updateStyle"  type="boolean" alwaysNotify="true"/>
-      
       <field
         id='isDisplayedInDynamicContainer'
         type='boolean'

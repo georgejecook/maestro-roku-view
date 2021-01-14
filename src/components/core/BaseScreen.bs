@@ -4,9 +4,6 @@
 '     provides common functions, which all screens require
 '  */
 
-function Init()
-end function
-
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ nav support
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -63,7 +60,7 @@ function getNavController()
     return m.top.navController
   else
     'might be nested in a screen; ultimately, there has to be a navcontroller somewhere
-    return ViewUtils.getFirstParentWithType(m.top, "NavController")
+    return getFirstParentWithType(m.top, "NavController")
   end if
 end function
 
