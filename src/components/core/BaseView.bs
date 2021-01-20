@@ -12,7 +12,6 @@ import "pkg:/source/roku_modules/mioc/MIOC.brs"
 '  */
 
 function init() as void
-  ? "initizlizing with name "; getViewName()
   log.registerLogger(getViewName())
   mioc.initialize()
   if m.global._mIocContainer <> invalid
@@ -48,7 +47,11 @@ end function
 '  * @param {BaseView} the view to initialize
 '  */
 function initializeView(view, args = invalid) as void
-  view@._initialize(args)
+  if view <> invalid
+    view@._initialize(args)
+  else
+    m.logError("view is invalid!")
+  end if
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

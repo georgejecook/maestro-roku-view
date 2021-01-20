@@ -118,8 +118,9 @@ function onGainedFocus(isSelfFocused)
       m.vm.onGainedFocus(isSelfFocused)
     end if
 
-    if MVMM.onFocusIdChange <> invalid
-      MVMM.onFocusIdChange(m.vm.focusId) 
+    if mc.isFunction(mx_onFocusIdChange) <> invalid
+      'bs:disable-next-line
+      mx_onFocusIdChange(m.vm.focusId) 
     end if
 
   end if

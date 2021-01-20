@@ -16,6 +16,12 @@
         1013,
         1009
       ]
+    },
+    {
+      "src": "**/WhiteList.xml",
+      "codes": [
+        1067
+      ]
     }
   ],
   "emitDefinitions": true

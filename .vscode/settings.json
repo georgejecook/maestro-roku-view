@@ -1,4 +1,13 @@
 {
+  "cSpell.ignorePaths": [
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    "dist",
+    "build",
+  ],
   "files.exclude": {
     "build": true,
     ".history": true,
@@ -9,6 +18,9 @@
     "**/.settings": true,
     "**/.factorypath": true,
     "/tmp/**": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/out": true
   },
   "search.exclude": {
     "**/.git/objects/**": true,
@@ -23,6 +35,9 @@
     "out/**": true,
     "**/out/**": true,
     "/tmp/**": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/out": true
   },
   "files.useExperimentalFileWatcher": true,
   "files.watcherExclude": {
@@ -34,14 +49,9 @@
     "**/.history/**": true,
     ".history/**": true,
     "**/out/**": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/out": true
   },
-  "jira-plugin.workingProject": "",
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#551A8B",
-    "statusBar.debuggingBackground": "#551A8B",
-    "panelTitle.activeBorder": "#ff0000",
-    "activityBar.background": "#2E2D30",
-    "titleBar.activeBackground": "#403F43",
-    "titleBar.activeForeground": "#FAFAFA"
-  },
+
 }
