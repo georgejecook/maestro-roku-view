@@ -22,7 +22,7 @@ function init() as void
   keyPressMixinInit()
 
   'TODO - guard these observers to not include in prod builds
-  m.top.observeField("_debugM", mc.getFunctionName(onDebugMChange))
+  m.top.observeField("__debugM", mc.getFunctionName(onDebugMChange))
 
   m.wasShown = false
 end function
@@ -33,8 +33,8 @@ end function
 
 function onDebugMChange()
   m.logInfo("dumping m for debugging purposes")
-  mc.setOrAddNodeField(m.top, "_m", m)
-  mc.setOrAddNodeField(m.top, "_vm", m.vm)
+  mc.setOrAddNodeField(m.top, "__m", m)
+  mc.setOrAddNodeField(m.top, "__vm", m.vm)
 end function
 
 
@@ -128,6 +128,9 @@ function _initialize(args = invalid)
   if not m.top.isInitialized
     m.top.isInitialized = true
     initialize(args)
+    if m.vm <> invalid
+      m.vm.initialize()
+    end if
     m.top.observeField("visible", mc.getFunctionName(onVisibleChange))
     if m.top.visible and not m.top.isShown
       _onShow(invalid)

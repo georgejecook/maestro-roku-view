@@ -1,0 +1,15 @@
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+
+class ComponentClass
+  public global
+  public data
+  public top
+
+  function new(name, globalNode, top)
+    log.registerLogger(name, m)
+    m.global = globalNode
+    m.top = top
+    m.data = top.data
+  end function
+
+end class
