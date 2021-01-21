@@ -85,7 +85,7 @@ end function
 
 function toggleLongPressTimer(interval)
   if m.longPressTimer <> invalid
-    m.longPressTimer.unobserveField("fire")
+    m.longPressTimer.unobserveFieldScoped("fire")
     m.longPressTimer = invalid
   end if
 
@@ -93,7 +93,7 @@ function toggleLongPressTimer(interval)
     m.longPressTimer = createObject("roSGNode", "Timer")
     m.longPressTimer.duration = interval
     m.longPressTimer.repeat = true
-    m.longPressTimer.observeField("fire", mc.getFunctionName(onLongPressTimerFire))
+    m.longPressTimer.observeFieldScoped("fire", mc.getFunctionName(onLongPressTimerFire))
     m.longPressTimer.control = "start"
   else if m.longPressKey <> ""
     m.logInfo("finishing longPress on key ", key)

@@ -7,12 +7,12 @@ function init()
   m.interpolator = m.top.findNode("container_interpolator")
   m.previousY = 0
 
-  m.top.observeField("index", mc.getFunctionName(onIndexChange))
-  m.top.observeField("size", mc.getFunctionName(onSizeChange))
-  m.top.observeField("children", mc.getFunctionName(onChildrenChange))
-  m.top.observeField("needsRecalulating", mc.getFunctionName(onNeedsRecalcuatingChange))
-  m.top.observeField("yOffsets", mc.getFunctionName(onIndexChange))
-  m.updateTimer.observeField("fire", mc.getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeFieldScoped("index", mc.getFunctionName(onIndexChange))
+  m.top.observeFieldScoped("size", mc.getFunctionName(onSizeChange))
+  m.top.observeFieldScoped("children", mc.getFunctionName(onChildrenChange))
+  m.top.observeFieldScoped("needsRecalulating", mc.getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeFieldScoped("yOffsets", mc.getFunctionName(onIndexChange))
+  m.updateTimer.observeFieldScoped("fire", mc.getFunctionName(onNeedsRecalcuatingChange))
   m.previousCurrFocusRow = 1
   m.isFloatingFocusOffsetApplied = false
   m.rowListFloatingFocusPositionOffset = 0
@@ -35,7 +35,7 @@ function updateChildren(newChildren = invalid)
     if child.id <> "container_layoutGroup" and child.id <> "container_animation" and child.id <> "container_updateTimer"
       children.push(child)
       if child.doesExist("currFocusRow")
-        child.observeField("currFocusRow", mc.getFunctionName(onHeroOffsetChildCurrFocusRowChange))
+        child.observeFieldScoped("currFocusRow", mc.getFunctionName(onHeroOffsetChildCurrFocusRowChange))
       end if
 
     end if

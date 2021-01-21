@@ -30,8 +30,8 @@ end function
 '  * @description creates required observers for a view. Call this from any view that uses FocusMixin (which does not extend `BaseView`)
 '  */
 function focusMixinInit()
-  m.top.observeField("isFocused", mc.getFunctionName(onIsFocusedChange))
-  m.top.observeField("isChildFocused", mc.getFunctionName(onIsChildFocusedChange))
+  m.top.observeFieldScoped("isFocused", mc.getFunctionName(onIsFocusedChange))
+  m.top.observeFieldScoped("isChildFocused", mc.getFunctionName(onIsChildFocusedChange))
 end function
 
 ' /**

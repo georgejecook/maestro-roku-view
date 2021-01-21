@@ -6,7 +6,7 @@ function _initialize(args = invalid)
   m.originalChildren = m.top.getChildren( - 1, 0)
   i = 0
   for each child in m.originalChildren
-    child.observeField("visible", "onChildVisibleChange")
+    child.observeFieldScoped("visible", "onChildVisibleChange")
     child.addFields({ "layoutIndex": i })
     if not child.visible
       m.top.removeChild(child)

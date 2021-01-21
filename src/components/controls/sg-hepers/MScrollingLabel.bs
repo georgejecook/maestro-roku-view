@@ -1,7 +1,7 @@
 
 function init()
-  m.top.observeField("systemFont", "onSystemFontChange")
-  m.top.observeField("style", "onStyleChange")
+  m.top.observeFieldScoped("systemFont", "onSystemFontChange")
+  m.top.observeFieldScoped("style", "onStyleChange")
   onSystemFontChange()
 end function
 
