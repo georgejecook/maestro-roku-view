@@ -1,27 +1,29 @@
 import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init()
-
-  m.top.observeFieldScoped("systemFont", mc.getFunctionName(onSystemFontChange))
+  m.top.observeFieldScoped("fontKey", mc.getFunctionName(onFontKeyChange))
   m.top.observeFieldScoped("style", mc.getFunctionName(onStyleChange))
-  onSystemFontChange()
+  onFontKeyChange()
 end function
 
-function onSystemFontChange()
+function onFontKeyChange()
 
-  if m.top.systemFont <> invalid
-    parts = m.top.systemFont.split(",")
+  if m.top.fontKey <> invalid
+    parts = m.top.fontKey.split(",")
     if parts <> invalid and parts.count() > 0
-      m.top.font = "font:" + parts[0] + "SystemFont"
-    end if
 
-    if parts.count() > 1 
-      if m.top.font <> invalid
-        m.top.font.size = parts[1].toInt()
+      if parts.count() = 4 and m.global.fontManager <> invalid
+        m.top.font = m.global.fontManager@.getFontWithKey(m.top.fontKey)
       else
-        ' logError("could not create font")
+        m.top.font = "font:" + parts[0] + "SystemFont"
+      end if
+      if parts.count() > 1
+        if m.top.font <> invalid
+          m.top.font.size = parts[1].toInt()
+        end if
       end if
     end if
+
   end if
 end function
 

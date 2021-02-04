@@ -27,3 +27,20 @@ function getFirstParentWithType(node, parentType)
   end while
   return invalid
 end function
+
+function getFieldInParent(content, fieldName, maxIterations = 3, defaultValue = {})
+  currentNode = content
+  value = invalid
+
+  i = 0
+  while currentNode <> invalid and i < maxIterations
+    value = currentNode[fieldName]
+    if value <> invalid
+      return value
+    end if
+    currentNode = currentNode.getParent()
+    i++
+  end while
+
+  return defaultValue
+end function

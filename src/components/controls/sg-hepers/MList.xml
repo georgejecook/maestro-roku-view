@@ -20,6 +20,9 @@
         id='content'
         type='node' />
     <field
+        id='height'
+        type='float' />
+    <field
         id='width'
         type='float' />
     <field

@@ -8,9 +8,9 @@
         type='assocarray' />
 
     <field
-        id='systemFont'
+        id='fontKey'
         type='string'
-        value='Smallest, 21' />
+        value='' />
 
 
   </interface>
