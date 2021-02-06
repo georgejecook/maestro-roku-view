@@ -4,6 +4,7 @@
     extends='Group'>
   <interface>
     <function name='onKeyPressDown' />
+    <function name='onStyleChange' />
     <function name='onKeyPressUp' />
     <function name='onKeyPressLeft' />
     <function name='onKeyPressRight' />
