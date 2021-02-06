@@ -9,7 +9,7 @@
         onChange='onStyleChange' />
 
     <field
-        id='systemFont'
+        id='fontKey'
         type='string'
         value='Smallest, 21' />
 

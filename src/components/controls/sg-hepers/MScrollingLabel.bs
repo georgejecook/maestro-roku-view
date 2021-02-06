@@ -1,19 +1,19 @@
 
 function init()
-  m.top.observeFieldScoped("systemFont", "onSystemFontChange")
+  m.top.observeFieldScoped("fontKey", "onFontKeyChange")
   m.top.observeFieldScoped("style", "onStyleChange")
-  onSystemFontChange()
+  onFontKeyChange()
 end function
 
-function onSystemFontChange()
-  
+function onFontKeyChange()
+
   if m.top.systemFont <> invalid
     parts = m.top.systemFont.split(",")
     if parts <> invalid and parts.count() > 0
       m.top.font = "font:" + parts[0] + "SystemFont"
     end if
-    
-    if parts.count() > 1 
+
+    if parts.count() > 1
       if m.top.font <> invalid
         m.top.font.size = parts[1].toInt()
       else
