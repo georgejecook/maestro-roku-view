@@ -1,10 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <component
-    name='WhiteList'
+    name='ropm_WhiteList'
     extends='Group'>
   <interface>
     <function name='onKeyPressDown' />
-    <function name='onStyleChange' />
     <function name='onKeyPressUp' />
     <function name='onKeyPressLeft' />
     <function name='onKeyPressRight' />
@@ -30,8 +29,11 @@
     <function name='onDidLoseFocus' />
     <function name='onGainingFocus' />
     <function name='onLosingFocus' />
-  
+    <function name='getNavController' />
+    <function name='getTopScreen' />
+
+    <!-- note this is coz of bugs in ropm -->
+    <function name='getTopScreen' />
+
   </interface>
-  <children>
-  </children>
 </component>

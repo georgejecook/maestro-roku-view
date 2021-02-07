@@ -36,12 +36,11 @@
     <!-- private -->
     <field
         id='focusTimerFire'
-        alias='focusTimer.fire'
-        onChange='onFocusTimerFire' />
+        alias='focusTimer.fire' />
 
-    <function name='setFocusOn' />
-    <function name='unsetFocusOn' />
-    <function name='setFocusLocked' />
+    <function name='_setFocusOn' />
+    <function name='_unsetFocusOn' />
+    <function name='_setFocusLocked' />
   </interface>
   <children>
     <Timer

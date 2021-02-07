@@ -1,5 +1,6 @@
 function init()
   m.originalChildren = []
+  m.top.observeFieldScoped("style", "onStyleChange")
 end function
 
 function _initialize(args = invalid)

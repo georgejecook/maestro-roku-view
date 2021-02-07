@@ -1,4 +1,12 @@
+
+function init()
+  m.top.observeFieldScoped("style", "onStyleChange")
+end function
+
 function onStyleChange()
   m.top.setFields(m.top.style)
+  'hardcoded due to layout bugs
+  m.top.height = 550
+  m.top.width = 1300
 end function
 

@@ -24,7 +24,7 @@ end function
 
 function changeCurrentItem(item)
   m.logInfo("changeCurrentItem", item)
-  
+
   if m.top.currentItem = invalid or not m.top.currentItem.isSameNode(item)
     m.top.currentItem = item
     view = getViewForMenuItemContent(m.top.currentItem, item.screenType <> "DeepLinkingController")
@@ -33,7 +33,7 @@ function changeCurrentItem(item)
       'won't trigger show callbacks prematurely
       view.visible = false
       view.isShown = false
-      
+
       if not view.isInitialized
         initializeView(view)
       end if
@@ -52,13 +52,13 @@ function getViewForMenuItemContent(menuItemContent, useCache = true)
   if menuItemContent = invalid
     return invalid
   end if
-  
+
   view = m.viewsByMenuItemId[menuItemContent.id]
-  
+
   if view = invalid or not useCache
     view = _createView(menuItemContent)
   end if
-  
+
   return view
 end function
 
@@ -78,19 +78,19 @@ end function
 function _createView(menuItemContent)
   m.logMethod("createView menuItemContent.screenType", menuItemContent.screenType)
   childView = createView(menuItemContent)
-  
+
   if childView <> invalid
     containerView = createObject("roSGNode", "TabChildScreen")
-    containerView.content = childView
+    containerView.rootView = childView
     containerView.id = menuItemContent.id
     childView.navController = containerView.navController
     containerView.isResettingNavController = menuItemContent.screenType <> "DeepLinkingController"
-    
+
     m.viewsByMenuItemId[menuItemContent.id] = containerView
     'won't trigger show callbacks prematurely
     childView.visible = false
     childView.isShown = false
-    
+
     ' initializeView(view)
     initializeView(containerView)
     containerView.visible = false
@@ -110,12 +110,12 @@ end function
 '  * @returns {BaseScreen} a screen to display in a TabChildScreen
 '  */
 function createView(menuItemContent)
-  
+
   if menuItemContent.screenType <> "none"
     view = createObject("roSGNode", menuItemContent.screenType)
     view.id = menuItemContent.id
   end if
-  
+
   return view
 end function
 

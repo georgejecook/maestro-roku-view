@@ -1,8 +1,8 @@
 import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init()
-  m.top.observeFieldScoped("fontKey", mc.getFunctionName(onFontKeyChange))
-  m.top.observeFieldScoped("style", mc.getFunctionName(onStyleChange))
+  m.top.observeFieldScoped("fontKey", "onFontKeyChange")
+  m.top.observeFieldScoped("style", "onStyleChange")
   onFontKeyChange()
 end function
 

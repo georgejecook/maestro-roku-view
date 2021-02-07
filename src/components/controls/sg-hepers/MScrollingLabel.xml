@@ -5,8 +5,7 @@
   <interface>
     <field
         id='style'
-        type='assocarray'
-        onChange='onStyleChange' />
+        type='assocarray' />
 
     <field
         id='fontKey'

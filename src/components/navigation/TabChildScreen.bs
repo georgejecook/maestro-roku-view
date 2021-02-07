@@ -6,7 +6,7 @@ function init()
   m.logMethod("init")
   m.top.navController = m.top.findNode("navController")
   initializeView(m.top.navController)
-  m.isFirstScreenCreated = false
+  m.wasRootViewDisplayed = false
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -16,7 +16,7 @@ end function
 function reset(args = invalid)
   m.logMethod("reset")
   resetNavControllerToRoot()
-  
+
   if m.top.navController.currentView <> invalid
     m.top.navController.currentView@.reset()
   end if
@@ -32,15 +32,15 @@ end function
 
 function createFirstScreen()
   m.logMethod("createFirstScreen")
-  if m.top.content <> invalid
-    if m.top.content <> invalid
-      push(m.top.content)
-      m.isFirstScreenCreated = true
+  if m.top.rootView <> invalid
+    if m.top.rootView <> invalid
+      push(m.top.rootView)
+      m.wasRootViewDisplayed = true
     else
       m.logError("no screen ")
     end if
   else
-    m.logError("content was invalid!")
+    m.logError("rootView was invalid!")
   end if
 end function
 
@@ -50,13 +50,13 @@ end function
 
 function onKeyPressBack() as boolean
   m.logMethod("onKeyPressBack")
-  
+
   if m.top.navController.numberOfViews > 1
     pop()
     setFocus(m.top.navController)
     return true
   end if
-  
+
   return false
 end function
 
@@ -67,7 +67,7 @@ end function
 function onShow()
   m.logMethod("onShow")
 
-  if m.isFirstScreenCreated
+  if m.wasRootViewDisplayed
     reset()
   else
     createFirstScreen()

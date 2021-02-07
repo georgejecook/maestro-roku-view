@@ -22,7 +22,7 @@ function init() as void
   keyPressMixinInit()
 
   'TODO - guard these observers to not include in prod builds
-  m.top.observeFieldScoped("__debugM", mc.getFunctionName(onDebugMChange))
+  m.top.observeFieldScoped("__debugM", "onDebugMChange")
 
   m.wasShown = false
 end function
@@ -131,7 +131,7 @@ function _initialize(args = invalid)
     if m.vm <> invalid
       m.vm.initialize()
     end if
-    m.top.observeFieldScoped("visible", mc.getFunctionName(onVisibleChange))
+    m.top.observeFieldScoped("visible", "onVisibleChange")
     if m.top.visible and not m.top.isShown
       _onShow(invalid)
     end if
@@ -141,7 +141,7 @@ function _initialize(args = invalid)
 end function
 
 function callVMFunc(funcName, p1 = "#M_NONE#", p2 = "#M_NONE#", p3 = "#M_NONE#")
-  return mc.callAAFunc(m.vm, funcName, p1, p2, p3) 
+  return mc.callAAFunc(m.vm, funcName, p1, p2, p3)
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -4,6 +4,8 @@ function init()
   m.rowList = m.top.findNode("rowList")
   m.rowList.observeFieldScoped("rowItemFocused", "onRowListItemFocused")
   m.rowList.observeFieldScoped("rowItemSelected", "onRowListItemSelected")
+
+  m.top.observeFieldScoped("style", "onStyleChange")
   m.top.observeFieldScoped("content", "onLayoutChange")
   m.top.observeFieldScoped("direction", "onLayoutChange")
   m.top.observeFieldScoped("horizAlignment", "onLayoutChange")
@@ -26,21 +28,21 @@ function onLayoutChange() as void
     return
   end if
   m.content = createContent()
-  
+
   if m.top.layout = "horizontal"
     m.top.numRows = 1
   end if
-  
+
   m.rowList.itemSize = [m.top.width, m.top.itemSize[1]]
   m.rowList.rowItemSize = [m.top.itemSize]
   m.rowList.rowItemSpacing = [m.top.itemSpacing]
   m.rowList.focusXOffset = [getXOffset()]
   m.rowList.content = m.content
-  
+
   'roku bug stops the last spacing value being repeated: so we have to workaround it
   ySpacing = [m.top.itemSpacing[1]]
   spacings = []
-  for i = 0 to m.content.count() 
+  for i = 0 to m.content.count()
     spacings.push(ySpacing)
   end for
   m.rowList.rowSpacings = spacings
@@ -90,9 +92,9 @@ function getXOffset()
 end function
 
 function createContent()
-  m.items = m.top.content.clone(true).getChildren( - 1, 0)
+  m.items = m.top.content.clone(true).getChildren(-1, 0)
   content = createObject("roSGNode", "ContentNode")
-  children = [] 
+  children = []
   for each item in m.items
     if m.top.direction = "vertical"
       child = createObject("roSGNode", "ContentNode")
@@ -102,14 +104,14 @@ function createContent()
     end if
     children.push(child)
   end for
-  
+
   if m.top.direction = "vertical"
     content.appendChildren(children)
   else
     row = content.CreateChild("ContentNode")
     row.appendChildren(children)
   end if
-  
+
   return content
 end function
 

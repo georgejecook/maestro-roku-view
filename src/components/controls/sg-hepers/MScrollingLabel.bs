@@ -2,6 +2,7 @@
 function init()
   m.top.observeFieldScoped("fontKey", "onFontKeyChange")
   m.top.observeFieldScoped("style", "onStyleChange")
+
   onFontKeyChange()
 end function
 

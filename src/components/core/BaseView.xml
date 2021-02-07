@@ -28,7 +28,7 @@
     <field id="isFocused"  type="boolean" value="false" alwaysNotify="true"/>
     <field id="isChildFocused"  type="boolean" value="false" alwaysNotify="false"/>
     
-    <field id="isEnabled" type="boolean" value="true" />
+    <field id="enabled" type="boolean" value="true" />
 
     <!-- FOR DEBUGGING PURPOSES -->
     <field id="__uvid"  type="integer" value="0"/>

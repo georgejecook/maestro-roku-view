@@ -7,12 +7,12 @@ function init()
   m.interpolator = m.top.findNode("container_interpolator")
   m.previousY = 0
 
-  m.top.observeFieldScoped("index", mc.getFunctionName(onIndexChange))
-  m.top.observeFieldScoped("size", mc.getFunctionName(onSizeChange))
-  m.top.observeFieldScoped("children", mc.getFunctionName(onChildrenChange))
-  m.top.observeFieldScoped("needsRecalulating", mc.getFunctionName(onNeedsRecalcuatingChange))
-  m.top.observeFieldScoped("yOffsets", mc.getFunctionName(onIndexChange))
-  m.updateTimer.observeFieldScoped("fire", mc.getFunctionName(onNeedsRecalcuatingChange))
+  m.top.observeFieldScoped("index", "onIndexChange")
+  m.top.observeFieldScoped("size", "onSizeChange")
+  m.top.observeFieldScoped("children", "onChildrenChange")
+  m.top.observeFieldScoped("needsRecalulating", "onNeedsRecalcuatingChange")
+  m.top.observeFieldScoped("yOffsets", "onIndexChange")
+  m.updateTimer.observeFieldScoped("fire", "onNeedsRecalcuatingChange")
   m.previousCurrFocusRow = 1
   m.isFloatingFocusOffsetApplied = false
   m.rowListFloatingFocusPositionOffset = 0
@@ -35,7 +35,7 @@ function updateChildren(newChildren = invalid)
     if child.id <> "container_layoutGroup" and child.id <> "container_animation" and child.id <> "container_updateTimer"
       children.push(child)
       if child.doesExist("currFocusRow")
-        child.observeFieldScoped("currFocusRow", mc.getFunctionName(onHeroOffsetChildCurrFocusRowChange))
+        child.observeFieldScoped("currFocusRow", "onHeroOffsetChildCurrFocusRowChange")
       end if
 
     end if
@@ -90,7 +90,7 @@ function fixRowListPosition(rowlist, direction, currFocusRow)
     m.isFloatingFocusOffsetApplied = true
     newY = getYOfIndex(m.top.index) - m.rowListFloatingFocusPositionOffset
     moveContentTo(m.previousY, newY)
-  else if direction = -1 and currFocusRow < 1.5 
+  else if direction = -1 and currFocusRow < 1.5
     ' ? "removing fix"
     m.isFloatingFocusOffsetApplied = false
     newY = getYOfIndex(m.top.index)
@@ -121,7 +121,7 @@ function onChildrenChange()
   m.layoutGroup.removeChildren(m.layoutGroup.getChildren(-1, 0))
   updateChildren(m.top.children)
   onIndexChange()
-  onSizeChange() 
+  onSizeChange()
 end function
 
 function onIndexChange()
@@ -159,7 +159,7 @@ function moveToCurrentIndex(forceNoAnimation = false)
 
   ' m.logInfo("index", m.top.index, "new Y is", newY, "force no animation", forceNoAnimation, "animationDirection", m.animationDirection)
 
-  moveContentTo(m.previousY, newY) 
+  moveContentTo(m.previousY, newY)
   m.previousY = newY
 end function
 
@@ -194,7 +194,7 @@ function getYOfIndex(index)
     ' m.logVerbose("child is hero with offset applied")
     ' m.logVerbose(">>> adding child hero height", child.heroControl.boundingRect().height)
     currentOffset += - child.heroControl.boundingRect().height
-  else 
+  else
     if index < m.top.yOffsets.count()
       currentOffset -= m.top.yOffsets[index]
     else
@@ -235,9 +235,9 @@ function onNeedsRecalcuatingChange()
     child.translation = [0, y]
     y += child.boundingRect().height
 
-    mc.setOrAddNodeField(child, "heroControl", heroControl) 
-    mc.setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true) 
-    mc.setOrAddNodeField(child, "_mc.tiContainer", m.top) 
+    mc.setOrAddNodeField(child, "heroControl", heroControl)
+    mc.setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true)
+    mc.setOrAddNodeField(child, "_mc.tiContainer", m.top)
 
     if child.isHero = true
       heroControl = child

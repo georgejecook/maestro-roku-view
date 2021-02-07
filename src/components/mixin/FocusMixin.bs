@@ -18,8 +18,10 @@
 '  * @description creates the FocusManager, used by the FocusMixin. This method should be called early on in your app initializatoin (e.g in the init method of your AppController, or similar class)
 '  * @param {global} - globalNode pointer to globalNode (i.e. m.global)
 '  */
-function initializeFocusManager(globalNode)
-  globalNode.addFields({ "focusManager": createObject("roSGNode", "FocusManager") })
+function initializeFocusManager(globalNode, isLogging = false)
+  focusManager = createObject("roSGNode", "FocusManager")
+  globalNode.addFields({ "focusManager": focusManager })
+  focusManager.isLogging = isLogging
 end function
 
 ' /**
@@ -30,8 +32,8 @@ end function
 '  * @description creates required observers for a view. Call this from any view that uses FocusMixin (which does not extend `BaseView`)
 '  */
 function focusMixinInit()
-  m.top.observeFieldScoped("isFocused", mc.getFunctionName(onIsFocusedChange))
-  m.top.observeFieldScoped("isChildFocused", mc.getFunctionName(onIsChildFocusedChange))
+  m.top.observeFieldScoped("isFocused", "onIsFocusedChange")
+  m.top.observeFieldScoped("isChildFocused", "onIsChildFocusedChange")
 end function
 
 ' /**
@@ -44,7 +46,7 @@ end function
 '  * @param {boolean} forceSet - will set focus, even if the focus lock is on
 '  */
 function setFocus(node, forceSet = false)
-  m.global.focusManager@.setFocusOn(node, forceSet)
+  m.global.focusManager@._setFocusOn(node, forceSet)
 end function
 
 '*************************************************************
@@ -61,7 +63,7 @@ end function
 '  * @param {roSGNode} node - node to unsset focus on
 '  */
 function unsetFocus(node)
-  m.global.focusManager@.unsetFocusOn(node)
+  m.global.focusManager@._unsetFocusOn(node)
 end function
 
 ' /**
@@ -74,11 +76,13 @@ end function
 '  * @param {string} - focusLockReason - the reason for locking - this will appear in m.logging output
 '  */
 function setFocusLocked(node, focusLockReason = "")
-  m.global.focusManager@.setFocusLocked(node, focusLockReason)
+  m.global.focusManager@._setFocusLocked(node, focusLockReason)
 end function
 
 function onIsFocusedChange()
-  ' m.logInfo("m.top.isFocused", m.top.isFocused, mc.dv(m.top))
+  if m.global.focusManager.isLogging
+    m.logVerbose("m.top.isFocused", m.top.isFocused, mc.dv(m.top))
+  end if
 
   if m.top.isFocused
     onGainedFocus(true)
@@ -88,14 +92,16 @@ function onIsFocusedChange()
 end function
 
 function onIsChildFocusedChange()
-  ' m.logInfo("m.top.isChildFocused", m.top.isChildFocused, mc.dv(m.top))
+  if m.global.focusManager.isLogging
+    m.logVerbose("m.top.isChildFocused", m.top.isChildFocused, mc.dv(m.top))
+  end if
 
   if m.top.isChildFocused
     onGainedFocus(false)
   else
     'we dont' notify about this
   end if
-end function 
+end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 '++ abstract focus methods
@@ -110,7 +116,9 @@ end function
 '  * @param {boolean} isSelfFocused - if true, then this is the control that is focused, if false, then it is one of the control's parents
 '  */
 function onGainedFocus(isSelfFocused)
-  m.logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
+  if m.global.focusManager.isLogging
+    m.logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
+  end if
 
   if isSelfFocused and m.vm <> invalid
 
@@ -120,7 +128,7 @@ function onGainedFocus(isSelfFocused)
 
     if mc.isFunction(mx_onFocusIdChange) <> invalid
       'bs:disable-next-line
-      mx_onFocusIdChange(m.vm.focusId) 
+      mx_onFocusIdChange(m.vm.focusId)
     end if
 
   end if
@@ -134,7 +142,9 @@ end function
 '  * @description invoked when a control, loses focus
 '  */
 function onLostFocus()
-  m.logInfo("lost focus:", m.top.subType(), ".", m.top.id)
+  if m.global.focusManager.isLogging
+    m.logInfo("lost focus:", m.top.subType(), ".", m.top.id)
+  end if
   if m.vm <> invalid and m.vm.onLostFocus <> invalid
     m.vm.onLostFocus()
   end if
