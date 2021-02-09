@@ -9,7 +9,7 @@
     <function name='onKeyPressRight' />
     <function name='onKeyPressOK' />
     <function name='onKeyPressBack' />
-    <function name='onKeyPressOption' />
+    <function name='onKeyPressOptions' />
     <function name='onKeyPressPlay' />
     <function name='onGainedFocus' />
     <function name='onLostFocus' />
