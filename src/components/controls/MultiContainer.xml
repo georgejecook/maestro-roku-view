@@ -51,6 +51,7 @@
         id='container_updateTimer'
         duration='0.2'
         repeat='false' />
+    <Group id='container_backgroundGroup' />
     <Group id='container_layoutGroup' />
     <!-- layoutDirection="vert" /> -->
     <Animation

@@ -1,6 +1,7 @@
 import "pkg:/source/roku_modules/log/LogMixin.brs"
 
 function init()
+  m.backgroundGroup = m.top.findNode("container_backgroundGroup")
   m.layoutGroup = m.top.findNode("container_layoutGroup")
   m.updateTimer = m.top.findNode("container_updateTimer")
   m.animation = m.top.findNode("container_animation")
@@ -16,6 +17,13 @@ function init()
   m.previousCurrFocusRow = 1
   m.isFloatingFocusOffsetApplied = false
   m.rowListFloatingFocusPositionOffset = 0
+  m.protectedChildIds = {
+    "container_backgroundGroup": true
+    "container_layoutGroup": true
+    "container_animation": true
+    "container_updateTimer": true
+    "container": true
+  }
   onSizeChange()
 end function
 
@@ -25,6 +33,7 @@ end function
 
 function updateChildren(newChildren = invalid)
   children = []
+  backgroundChildren = []
   m.updateTimer.control = "stop"
 
   if newChildren = invalid
@@ -32,8 +41,12 @@ function updateChildren(newChildren = invalid)
   end if
 
   for each child in newChildren
-    if child.id <> "container_layoutGroup" and child.id <> "container_animation" and child.id <> "container_updateTimer"
-      children.push(child)
+    if m.protectedChildIds[child.id] = invalid
+      if child.isBackgroundView = true
+        backgroundChildren.push(child)
+      else
+        children.push(child)
+      end if
       if child.doesExist("currFocusRow")
         child.observeFieldScoped("currFocusRow", "onHeroOffsetChildCurrFocusRowChange")
       end if
@@ -41,6 +54,7 @@ function updateChildren(newChildren = invalid)
     end if
   end for
 
+  m.backgroundGroup.appendChildren(backgroundChildren)
   m.layoutGroup.appendChildren(children)
   m.top.numChildren = children.count()
   m.top.index = 0
@@ -119,6 +133,7 @@ end function
 
 function onChildrenChange()
   m.layoutGroup.removeChildren(m.layoutGroup.getChildren(-1, 0))
+  m.backgroundGroup.removeChildren(m.backgroundGroup.getChildren(-1, 0))
   updateChildren(m.top.children)
   onIndexChange()
   onSizeChange()
