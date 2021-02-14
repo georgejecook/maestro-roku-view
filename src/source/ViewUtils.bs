@@ -44,3 +44,11 @@ function getFieldInParent(content, fieldName, maxIterations = 3, defaultValue = 
 
   return defaultValue
 end function
+
+function destroyView(view)
+  p = view.getParent()
+
+  if p <> invalid
+    p.removeChild(view)
+  end if
+end function
