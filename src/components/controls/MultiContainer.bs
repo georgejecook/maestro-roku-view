@@ -3,6 +3,7 @@ import "pkg:/source/roku_modules/log/LogMixin.brs"
 function init()
   m.backgroundGroup = m.top.findNode("container_backgroundGroup")
   m.layoutGroup = m.top.findNode("container_layoutGroup")
+  m.container_moveableContent = m.top.findNode("container_moveableContent")
   m.updateTimer = m.top.findNode("container_updateTimer")
   m.animation = m.top.findNode("container_animation")
   m.interpolator = m.top.findNode("container_interpolator")
@@ -128,7 +129,7 @@ function setClippingRectangle()
     clippingOffsets = [0, 0, 0, 0]
   end if
 
-  m.top.clippingRect = [clippingOffsets[0], clippingOffsets[1], m.top.size[0] + clippingOffsets[2], m.top.size[1] + clippingOffsets[3]]
+  m.container_moveableContent.clippingRect = [clippingOffsets[0], clippingOffsets[1], m.top.size[0] + clippingOffsets[2], m.top.size[1] + clippingOffsets[3]]
 end function
 
 function onChildrenChange()

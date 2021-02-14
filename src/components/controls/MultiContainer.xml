@@ -52,7 +52,9 @@
         duration='0.2'
         repeat='false' />
     <Group id='container_backgroundGroup' />
-    <Group id='container_layoutGroup' />
+    <Group id='container_moveableContent'>
+      <Group id='container_layoutGroup' />
+    </Group>
     <!-- layoutDirection="vert" /> -->
     <Animation
         id='container_animation'
