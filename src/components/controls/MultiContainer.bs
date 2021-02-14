@@ -24,6 +24,7 @@ function init()
     "container_animation": true
     "container_updateTimer": true
     "container": true
+    "container_moveableContent": true
   }
   onSizeChange()
 end function
@@ -234,7 +235,7 @@ function getYOfIndex(index)
       ' m.logVerbose(" child height si ", child.boundingRect().height)
       y += child.boundingRect().height
     else
-      ' m.logWarn("child of mc.tiContainer with index", i, "is invalid")
+      ' m.logWarn("child of _multiContainer with index", i, "is invalid")
     end if
   end for
 
@@ -243,7 +244,7 @@ function getYOfIndex(index)
 end function
 
 function onNeedsRecalcuatingChange()
-  m.logInfo("onNeedsRecalcuatingChange - recalcuating mc.ti container")
+  m.logInfo("onNeedsRecalcuatingChange - recalcuating _multiContainer")
   y = 0
   heroControl = invalid
   m.rowListFloatingFocusPositionOffset = 0
@@ -255,7 +256,7 @@ function onNeedsRecalcuatingChange()
 
     mc.setOrAddNodeField(child, "heroControl", heroControl)
     mc.setOrAddNodeField(child, "isHeroOffsetApplied", child.isHeroOffsetApplied = true)
-    mc.setOrAddNodeField(child, "_mc.tiContainer", m.top)
+    mc.setOrAddNodeField(child, "_multiContainer", m.top)
 
     if child.isHero = true
       heroControl = child
