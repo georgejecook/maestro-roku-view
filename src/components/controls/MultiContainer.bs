@@ -159,7 +159,9 @@ function onIndexChange()
   moveToCurrentIndex()
 
   if m.top.isFocused or m.top.isChildFocused
-    setFocus(child)
+    'another ropm miss
+    'bs:disable-next-line
+    mv_setFocus(child)
   end if
 
 end function
@@ -274,7 +276,9 @@ function onGainedFocus(isSelfFocused)
     ' onIndexChange()
     child = m.layoutGroup.getChild(m.top.index)
     if child <> invalid
-      setFocus(child)
+      'another ropm miss here. :(
+      'bs:disable-next-line
+      mv_setFocus(child)
     end if
   end if
 end function
