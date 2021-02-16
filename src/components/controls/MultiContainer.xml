@@ -13,7 +13,7 @@
         type='boolean'
         value='false' />
     <field
-        id='needsRecalulating'
+        id='needsRecalculating'
         type='boolean'
         value='false'
         alwaysNotify='true' />

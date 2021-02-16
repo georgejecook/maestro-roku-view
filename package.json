@@ -1,6 +1,6 @@
 {
   "name": "maestro-roku-view",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A development platform for building roku channels in brighterscript. View Library",
   "directories": {
     "doc": "docs"

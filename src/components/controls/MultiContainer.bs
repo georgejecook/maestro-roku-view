@@ -12,7 +12,7 @@ function init()
   m.top.observeFieldScoped("index", "onIndexChange")
   m.top.observeFieldScoped("size", "onSizeChange")
   m.top.observeFieldScoped("children", "onChildrenChange")
-  m.top.observeFieldScoped("needsRecalulating", "onNeedsRecalcuatingChange")
+  m.top.observeFieldScoped("needsRecalculating", "onNeedsRecalcuatingChange")
   m.top.observeFieldScoped("yOffsets", "onIndexChange")
   m.updateTimer.observeFieldScoped("fire", "onNeedsRecalcuatingChange")
   m.previousCurrFocusRow = 1
