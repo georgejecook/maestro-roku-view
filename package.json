@@ -14,10 +14,10 @@
     "dependencies": {
         "log": "/home/george/hope/open-source/maestro/roku-log",
         "mc": "/home/george/hope/open-source/maestro/maestro-roku-core",
-        "mioc": "/home/george/hope/open-source/maestro/maestro-roku-ioc",
-        "rooibos-roku": "file:../../rooibos/bsc-plugin"
+        "mioc": "/home/george/hope/open-source/maestro/maestro-roku-ioc"
     },
     "devDependencies": {
+        "rooibos-roku": "file:../../rooibos/bsc-plugin",
         "brighterscript": "^0.30.6",
         "maestro-roku-bsc-plugin": "file:../maestro-roku-bsc-plugin",
         "rimraf": "^3.0.2",
@@ -55,7 +55,7 @@
     "scripts": {
         "local": "ts-node scripts/install-maestro-local.js",
         "remote": "ts-node scripts/install-maestro-remote.js",
-        "build": "npx bsc && ts-node scripts/move-generated-files.js",
+        "build": "node scripts/run.js && ts-node scripts/move-generated-files.js",
         "build-remote": "npm run remote && npm run build",
         "build-local": "npm run local && npm run build",
         "build-test": "node scripts/run-test.js"
