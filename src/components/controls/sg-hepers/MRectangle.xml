@@ -8,5 +8,9 @@
         id='style'
         type='assocarray' />
 
+    <field
+        id='size'
+        type='array' />
+
   </interface>
 </component>

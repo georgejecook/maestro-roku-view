@@ -7,25 +7,25 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function showView(view)
-  m.logVerbose("showView")
+  m.log.verbose("showView")
   children = m.top.getChildren( - 1, 0)
-  
+
   for each child in children
     if not child.isSameNode(view)
       hideView(child)
     end if
   end for
-  
+
   if view <> invalid
-    m.logMethod("view is valid. isShown", m.top.isShown, "view", view.id)
-    
+    m.log.method("view is valid. isShown", m.top.isShown, "view", view.id)
+
     m.top.AppendChild(view)
     m.top.currentView = view
-    
+
     if m.top.isShown
       view.visible = true
     end if
-    
+
   end if
 end function
 
@@ -37,7 +37,7 @@ function hideView(view)
     view.visible = false
     m.top.RemoveChild(view)
   end if
-  
+
 end function
 
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -45,34 +45,34 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function onShow()
-  m.logVerbose("onShow", m.top.subType(), ".", m.top.id)
+  m.log.verbose("onShow", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
-    m.logInfo("setting view visible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
+    m.log.info("setting view visible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = true
   else
-    m.logWarn("this aggregrate view has no currentView")
+    m.log.warn("this aggregrate view has no currentView")
   end if
 end function
 
 function onHide()
-  m.logVerbose("onHide", m.top.subType(), ".", m.top.id)
+  m.log.verbose("onHide", m.top.subType(), ".", m.top.id)
   if m.top.currentView <> invalid
-    m.logInfo("setting view invisible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
+    m.log.info("setting view invisible: ",  m.top.currentView.subType(), ".", m.top.currentView.id)
     m.top.currentView.visible = false
   else
-    m.logWarn("this aggregrate view has no currentView")
+    m.log.warn("this aggregrate view has no currentView")
   end if
 end function
 
 function onGainedFocus(isSelfFocused)
-  ' m.logVerbose("onGainedFocus", isSelfFocused)
-  
+  ' m.log.verbose("onGainedFocus", isSelfFocused)
+
   if isSelfFocused
     if m.top.currentView <> invalid
-      ' m.logDebug("setting focus to view ", m.top.currentView.id)
+      ' m.log.debug("setting focus to view ", m.top.currentView.id)
       setFocus(m.top.currentView)
     else
-      m.logDebug("no current view when gaining focus")
+      m.log.debug("no current view when gaining focus")
     end if
   end if
 end function

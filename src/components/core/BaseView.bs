@@ -12,7 +12,7 @@ import "pkg:/source/roku_modules/mioc/MIOC.brs"
 '  */
 
 function init() as void
-  log.registerLogger(getViewName())
+  m.log = new log.Logger(getViewName())
   mioc.initialize()
   if m.global._mIocContainer <> invalid
     'TODO - I will probs import ioc into base view
@@ -32,7 +32,7 @@ function getViewName()
 end function
 
 function onDebugMChange()
-  m.logInfo("dumping m for debugging purposes")
+  m.log.info("dumping m for debugging purposes")
   mc.setOrAddNodeField(m.top, "__m", m)
   mc.setOrAddNodeField(m.top, "__vm", m.vm)
 end function
@@ -50,7 +50,7 @@ function initializeView(view, args = invalid) as void
   if view <> invalid
     view@._initialize(args)
   else
-    m.logError("view is invalid!")
+    m.log.error("view is invalid!")
   end if
 end function
 
@@ -60,7 +60,7 @@ end function
 
 function onVisibleChange()
   'TODO - does the nav controller handle this in future?
-  m.logInfo(m.top.id, "onVisibleChange visible ", m.top.visible)
+  m.log.info(m.top.id, "onVisibleChange visible ", m.top.visible)
   if m.top.visible
     _onShow(invalid)
   else
@@ -119,12 +119,12 @@ function _onHide(args)
     end if
 
   else
-    m.logWarn("onHide called before show: ignoring")
+    m.log.warn("onHide called before show: ignoring")
   end if
 end function
 
 function _initialize(args = invalid)
-  m.logMethod("initialize")
+  m.log.method("initialize")
   if not m.top.isInitialized
     m.top.isInitialized = true
     initialize(args)
@@ -136,7 +136,7 @@ function _initialize(args = invalid)
       _onShow(invalid)
     end if
   else
-    m.logWarn("View was already initialized. Ignoring subsequent call ", m.top)
+    m.log.warn("View was already initialized. Ignoring subsequent call ", m.top)
   end if
 end function
 

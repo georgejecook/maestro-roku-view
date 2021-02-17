@@ -8,7 +8,7 @@ function findNodes(nodeIds) as void
       if (node <> invalid)
         m[nodeId] = node
       else
-        m.logWarn("could not find node with id {0}", nodeId)
+        m.log.warn("could not find node with id {0}", nodeId)
       end if
     end for
   end if

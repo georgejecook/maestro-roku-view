@@ -1,0 +1,115 @@
+import "pkg:/source/roku_modules/mioc/MIOC.brs"
+import "pkg:/source/roku_modules/mc/Tasks.brs"
+import "pkg:/source/roku_modules/mc/Utils.brs"
+
+@strict
+class NodeClass
+
+  private top
+  private global
+  private name
+  private log
+
+  private function new(name, globalNode, top)
+    m.log = new log.Logger(name)
+    m.name = name
+    m.global = globalNode
+    m.top = top
+  end function
+
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  '++ creation
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  function createSGNode(nodeType, parent = invalid, id = invalid, args = invalid)
+    return mc.createSGNode(nodeType, parent, id, args)
+  end function
+
+  function createNode(nodeType)
+    return mc.createNode(nodeType)
+  end function
+
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  '++ ioc wrappers
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  private function getInstance(name)
+    return mioc.getInstance(name)
+  end function
+
+  private function setInstance(field, instance)
+    mioc.setInstance(field, instance)
+  end function
+
+  private function getClassInstance(classname, args = [], createTypeIfNotPresent = true, storeInstance = true)
+    return mioc.getClassInstance(classname, args, createTypeIfNotPresent, storeInstance)
+  end function
+
+  private function createClassInstance(classname, args = [])
+    return mioc.createClassInstance(classname, args)
+  end function
+
+  private function setClassInstance(instance)
+    return mioc.setClassInstance(instance)
+  end function
+
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  '++ Net helpers
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  private function get(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("GET", url, params, callback = invalid, headers, otherArgs)
+  end function
+
+  private function post(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("POST", url, params, callback = invalid, headers, otherArgs)
+  end function
+
+  private function delete(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("DELETE", url, params, callback = invalid, headers, otherArgs)
+  end function
+
+  private function put(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("PUT", url, params, callback = invalid, headers, otherArgs)
+  end function
+
+  private function executeRequest(method, url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    args = {
+      "method": method
+      "url": url
+      "params": params
+      "headers": headers
+      "otherArgs": otherArgs
+    }
+    return m.createTask("mc_RequestTask", args, callback)
+  end function
+
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  '++ task wrappers, for easy stubbing
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  private function observeNodeField(node, fieldName, callback, sendMode = "value", once = false)
+    mc.tasks.observeNodeField(node, fieldName, callback, sendMode, once, m)
+  end function
+
+  private function unobserveNodeField(node, fieldName, callback = invalid)
+    mc.tasks.cleanNodeObserver(node, fieldName)
+  end function
+
+  private function waitAFrame(callback, duration = 0.01, sendMode = "none")
+    mc.tasks.waitAFrame(callback, duration, sendMode, m)
+  end function
+
+  private function cancelWaitTimer(timer)
+    mc.tasks.cancelWaitTimer(timer)
+  end function
+
+  private function createTask(taskType, fields, callback = invalid, isRunning = true, sendMode = "value", fieldName = "output")
+    return mc.tasks.createTask(taskType, fields, callback, isRunning, sendMode, m, fieldName)
+  end function
+
+  private function cancelTask(task)
+    mc.tasks.cancelTask(task)
+  end function
+
+end class

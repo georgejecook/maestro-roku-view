@@ -7,26 +7,23 @@
     {
       "type": "brightscript",
       "request": "launch",
-      "name": "Test VIEW",
+      "name": "Test",
       "stopOnEntry": false,
-      "preLaunchTask": "buildTests",
+      "preLaunchTask": "build-test",
       "envFile": "${workspaceFolder}/.vscode/.env",
       "host": "${env:ROKU_DEV_TARGET}",
       "password": "${env:ROKU_DEVPASSWORD}",
-      "rootDir": "${workspaceFolder}/tests/dist",
-      "sourceDirs": [
-        "${workspaceFolder}/src",
-        "${workspaceFolder}/tests/src"
-      ],
+      "rootDir": "${workspaceFolder}/build",
       "files": [
         "manifest",
         "source/**/*.*",
         "components/**/*.*",
         "images/**/*.*",
-        "font/**/*.*",
+        "fonts/**/*.*",
+        "sounds/**/*.*",
         "!*.zip",
         "!**/*.zip"
-      ],
-    }
+      ]
+    },
   ]
 }

@@ -1,54 +1,63 @@
 {
-  "name": "maestro-roku-view",
-  "version": "0.3.4",
-  "description": "A development platform for building roku channels in brighterscript. View Library",
-  "directories": {
-    "doc": "docs"
-  },
-  "files": [
-    "dist/**/!(manifest)*",
-    "!roku_modules"
-  ],
-  "dependencies": {
-    "log": "npm:roku-log@^0.3.1",
-    "mc": "npm:maestro-roku-core@^0.3.7",
-    "mioc": "npm:maestro-roku-ioc@^0.3.0"
-  },
-  "devDependencies": {
-    "brighterscript": "^0.30.6",
-    "yargs": "^16.2.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/georgejecook/maestro-roku-view.git"
-  },
-  "keywords": [
-    "ropm",
-    "brightscript",
-    "mvvm",
-    "framework",
-    "fun"
-  ],
-  "author": "George Cook",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/georgejecook/maestro-roku-view/issues"
-  },
-  "homepage": "https://github.com/georgejecook/maestro-roku-view#readme",
-  "ts-node": {
-    "transpileOnly": true,
-    "compileOptions": {
-      "incremental": true,
-      "allowJs": false
+    "name": "maestro-roku-view",
+    "version": "0.4.0",
+    "description": "A development platform for building roku channels in brighterscript. View Library",
+    "directories": {
+        "doc": "docs"
+    },
+    "files": [
+        "dist/**/!(manifest)*",
+        "!dist/components/maestro",
+        "!roku_modules",
+        "dist/**/!(*.spec.)*"
+    ],
+    "dependencies": {
+        "log": "/home/george/hope/open-source/maestro/roku-log",
+        "mc": "/home/george/hope/open-source/maestro/maestro-roku-core",
+        "mioc": "/home/george/hope/open-source/maestro/maestro-roku-ioc",
+        "rooibos-roku": "file:../../rooibos/bsc-plugin"
+    },
+    "devDependencies": {
+        "brighterscript": "^0.30.6",
+        "maestro-roku-bsc-plugin": "file:../maestro-roku-bsc-plugin",
+        "rimraf": "^3.0.2",
+        "yargs": "^16.2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/georgejecook/maestro-roku-view.git"
+    },
+    "keywords": [
+        "ropm",
+        "brightscript",
+        "mvvm",
+        "framework",
+        "fun"
+    ],
+    "author": "George Cook",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/georgejecook/maestro-roku-view/issues"
+    },
+    "homepage": "https://github.com/georgejecook/maestro-roku-view#readme",
+    "ts-node": {
+        "transpileOnly": true,
+        "compileOptions": {
+            "incremental": true,
+            "allowJs": false
+        }
+    },
+    "ropm": {
+        "rootDir": "src",
+        "packageRootDir": "dist",
+        "prefixMatching": "expanded"
+    },
+    "scripts": {
+        "local": "ts-node scripts/install-maestro-local.js",
+        "remote": "ts-node scripts/install-maestro-remote.js",
+        "build": "npx bsc && ts-node scripts/move-generated-files.js",
+        "build-remote": "npm run remote && npm run build",
+        "build-local": "npm run local && npm run build",
+        "build-test": "node scripts/run-test.js"
     }
-  },
-  "ropm": {
-    "rootDir": "src",
-    "packageRootDir": "dist",
-    "prefixMatching": "expanded"
-  },
-  "scripts": {
-    "build": "npx bsc",
-    "test": "cd tests && npx ropm copy &&  --project ./bsconfig.json"
-  }
 }

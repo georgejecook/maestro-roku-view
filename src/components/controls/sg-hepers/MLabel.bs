@@ -1,8 +1,10 @@
 import "pkg:/source/roku_modules/mc/Utils.brs"
+import "pkg:/source/FontManager.bs"
 
 function init()
   m.top.observeFieldScoped("fontKey", "onFontKeyChange")
   m.top.observeFieldScoped("style", "onStyleChange")
+  m.top.observeFieldScoped("size", "onSizeChange")
   onFontKeyChange()
 end function
 
@@ -13,7 +15,8 @@ function onFontKeyChange()
     if parts <> invalid and parts.count() > 0
 
       if parts.count() = 4 and m.global.fontManager <> invalid
-        m.top.font = m.global.fontManager@.getFontWithKey(m.top.fontKey)
+        fm = new FontManager()
+        m.top.font = fm.getFontWithKey(m.top.fontKey)
       else
         m.top.font = "font:" + parts[0] + "SystemFont"
       end if
@@ -30,3 +33,11 @@ end function
 function onStyleChange()
   m.top.setFields(m.top.style)
 end function
+
+function onSizeChange()
+  if m.top.size <> invalid and m.top.size.count() > 0
+    m.top.width = m.top.size[0]
+    m.top.height = m.top.size[1]
+  end if
+end function
+

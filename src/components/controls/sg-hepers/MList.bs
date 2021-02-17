@@ -1,6 +1,6 @@
 
 function init()
-  log.registerLogger("MList")
+  m.log = new log.Logger("MList")
   m.rowList = m.top.findNode("rowList")
   m.rowList.observeFieldScoped("rowItemFocused", "onRowListItemFocused")
   m.rowList.observeFieldScoped("rowItemSelected", "onRowListItemSelected")
@@ -55,7 +55,7 @@ end function
 
 function onRowListItemSelected()
   m.top.itemSelected = getItemIndex(m.rowList.rowItemSelected)
-  m.logInfo("onRowListItemSelected", m.rowList.rowItemSelected, ">", m.top.itemSelected)
+  m.log.info("onRowListItemSelected", m.rowList.rowItemSelected, ">", m.top.itemSelected)
 end function
 
 function onRowListItemFocused()

@@ -6,7 +6,10 @@
   <interface>
     <field
         id='style'
-        type='assocarray'/>
+        type='assocarray' />
+    <field
+        id='size'
+        type='array' />
 
   </interface>
 </component>

@@ -1,0 +1,92 @@
+namespace tests
+
+  @tags("fixme")
+  @ignore("need run this in a way that I can bundle fonts for it.. ")
+  @suite("FontManager tests")
+  class FontManagerTests extends tests.BaseTestSuite
+
+    private manager
+
+    override function beforeEach()
+      m.manager = new FontManager()
+      families = [
+        "HelveticaNeue.ttf",
+        "HelveticaNeueBd.ttf",
+        "HelveticaNeueIt.ttf"
+      ]
+      m.manager.loadFonts(families)
+
+    end function
+
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @describe("tests constructor")
+    ' +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @it("initializes")
+    function _()
+    end function
+
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @describe("tests loadFonts")
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @it("handles bad values")
+    @params(invalid)
+    @params([])
+    function _(value)
+      m.manager.loadFonts(value)
+      'note - no asserts coz the font manager is now set!
+    end function
+
+    @it("loads passed in font names")
+    function _()
+      m.assertEqual(m.manager.families, ["HelveticaNeue"])
+    end function
+
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @describe("tests getFont")
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @it("handles bad values")
+    @params("notThere")
+    function _(name)
+      m.assertInvalid(m.manager.getFont(name, 20))
+    end function
+
+    @it("handles valid values")
+    @params("HelveticaNeue", 20, false, false)
+    @params("HelveticaNeue", 30, false, false)
+    @params("HelveticaNeue", 50, false, false)
+    @params("HelveticaNeue", 30, true, false)
+    @params("HelveticaNeue", 30, false, true)
+    function _(name, size, bold, italic)
+      font = m.manager.getFont(name, size, bold, italic)
+      m.assertType(font, "roFont")
+      m.assertAAHasKey(m.manager.cachedFonts, `${name},${size},${bold},${italic}`)
+    end function
+
+    @it("caches font values")
+    function _()
+      m.manager.getFont("HelveticaNeue", 30, false, false)
+      m.manager.getFont("HelveticaNeue", 30, false, false)
+      m.manager.getFont("HelveticaNeue", 30, true, false)
+      m.manager.getFont("HelveticaNeue", 30, false, false)
+      m.manager.getFont("HelveticaNeue", 40, false, true)
+
+      m.assertAAHasKey(m.manager.cachedFonts, "HelveticaNeue,30,false,false")
+      m.assertAAHasKey(m.manager.cachedFonts, "HelveticaNeue,30,true,false")
+      m.assertAAHasKey(m.manager.cachedFonts, "HelveticaNeue,40,false,true")
+
+      m.manager.registry = { "id": "manager.fontRegistry" }
+
+      m.expectNone(m.manager.registry, "getFont")
+
+      m.assertType(m.manager.getFont("HelveticaNeue", 30, false, false), "roFont")
+      m.assertType(m.manager.getFont("HelveticaNeue", 30, false, false), "roFont")
+      m.assertType(m.manager.getFont("HelveticaNeue", 30, true, false), "roFont")
+      m.assertType(m.manager.getFont("HelveticaNeue", 30, false, false), "roFont")
+      m.assertType(m.manager.getFont("HelveticaNeue", 40, false, true), "roFont")
+
+    end function
+  end class
+end namespace

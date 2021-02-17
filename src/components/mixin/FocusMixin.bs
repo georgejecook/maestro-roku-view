@@ -73,7 +73,7 @@ end function
 '  * @function
 '  * @description toggles if the focus is locked. If the focus is locked, then any call to setFocus will not work.
 '  * @param {boolean} - isLocked
-'  * @param {string} - focusLockReason - the reason for locking - this will appear in m.logging output
+'  * @param {string} - focusLockReason - the reason for locking - this will appear in m.log.ging output
 '  */
 function setFocusLocked(node, focusLockReason = "")
   m.global.focusManager@._setFocusLocked(node, focusLockReason)
@@ -81,7 +81,7 @@ end function
 
 function onIsFocusedChange()
   if m.global.focusManager.isLogging
-    m.logVerbose("m.top.isFocused", m.top.isFocused, mc.dv(m.top))
+    m.log.verbose("m.top.isFocused", m.top.isFocused, mc.dv(m.top))
   end if
 
   if m.top.isFocused
@@ -93,7 +93,7 @@ end function
 
 function onIsChildFocusedChange()
   if m.global.focusManager.isLogging
-    m.logVerbose("m.top.isChildFocused", m.top.isChildFocused, mc.dv(m.top))
+    m.log.verbose("m.top.isChildFocused", m.top.isChildFocused, mc.dv(m.top))
   end if
 
   if m.top.isChildFocused
@@ -117,7 +117,7 @@ end function
 '  */
 function onGainedFocus(isSelfFocused)
   if m.global.focusManager.isLogging
-    m.logInfo("onGainedFocus", m.top.subType(), isSelfFocused)
+    m.log.info("onGainedFocus", m.top.subType(), isSelfFocused)
   end if
 
   if isSelfFocused and m.vm <> invalid
@@ -143,7 +143,7 @@ end function
 '  */
 function onLostFocus()
   if m.global.focusManager.isLogging
-    m.logInfo("lost focus:", m.top.subType(), ".", m.top.id)
+    m.log.info("lost focus:", m.top.subType(), ".", m.top.id)
   end if
   if m.vm <> invalid and m.vm.onLostFocus <> invalid
     m.vm.onLostFocus()

@@ -10,53 +10,53 @@
 
 function push(view)
   navController = getNavController()
-  
+
   if (navController <> invalid)
     navController@.push(view)
   else
-    m.logError("Push failed - there is no navcontroller on ", m.top)
+    m.log.error("Push failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 function pop() as object
   navController = getNavController()
-  
+
   if (navController <> invalid)
     return navController@.pop()
   else
-    m.logError("Pop failed - there is no navcontroller on ", m.top)
+    m.log.error("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 function replaceNavControllerScreen(targetScreen)
   navController = getNavController()
-  
+
   if (navController <> invalid)
     navController@.replace(targetScreen)
   else
-    m.logError("Pop failed - there is no navcontroller on ", m.top)
+    m.log.error("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 
 function resetNavControllerToRoot()
-  m.logMethod("resetNavControllerToRoot." + m.top.id)
+  m.log.method("resetNavControllerToRoot." + m.top.id)
   resetNavController(invalid, 0)
 end function
 
 function resetNavController(newFirstScreen = invalid, endIndex = -1)
-  m.logMethod("resetNavController." + m.top.id)
+  m.log.method("resetNavController." + m.top.id)
   navController = getNavController()
-  
+
   if (navController <> invalid)
     navController@.reset(newFirstScreen, endIndex)
   else
-    m.logError("Pop failed - there is no navcontroller on ", m.top)
+    m.log.error("Pop failed - there is no navcontroller on ", m.top)
   end if
 end function
 
 function getNavController()
-  if m.top.navController <> invalid 
+  if m.top.navController <> invalid
     return m.top.navController
   else
     'might be nested in a screen; ultimately, there has to be a navcontroller somewhere
@@ -83,7 +83,7 @@ end function
 '  * @returns {BaseScreen} a screen considered as the top of this graph
 '  */
 function _getTopScreen(args = invalid)
-  m.logMethod("_getTopScreen")
+  m.log.method("_getTopScreen")
   topScreen = getTopScreen()
   navController = getNavController()
   if topScreen = invalid

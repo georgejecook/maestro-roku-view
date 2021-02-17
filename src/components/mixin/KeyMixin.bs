@@ -24,7 +24,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if mc.isFunction(isAnyKeyPressLocked) and isAnyKeyPressLocked()
       return true
     else if m.isKeyPressLocked
-      m.logWarn("All key presses are locked, due to isKeyPressLocked flag on ", m.top.id)
+      m.log.warn("All key presses are locked, due to isKeyPressLocked flag on ", m.top.id)
       return true
     end if
 
@@ -67,7 +67,7 @@ function onKeyEvent(key as string, press as boolean) as boolean
     'bs:disable-next-line
     if mc.isFunction(getLongPressIntervalForKey) then longPressInterval = getLongPressIntervalForKey(key) else longPressInterval = 0
     if longPressInterval > 0
-      m.logInfo("entering long press for key ", key)
+      m.log.info("entering long press for key ", key)
       m.longPressKey = key
       toggleLongPressTimer(longPressInterval)
     end if
@@ -96,7 +96,7 @@ function toggleLongPressTimer(interval)
     m.longPressTimer.observeFieldScoped("fire", "onLongPressTimerFire")
     m.longPressTimer.control = "start"
   else if m.longPressKey <> ""
-    m.logInfo("finishing longPress on key ", key)
+    m.log.info("finishing longPress on key ", key)
     if m.isLongPressStarted and mc.isFunction(onLongPressFinish)
       'bs:disable-next-line
       onLongPressFinish(m.longPressKey)
@@ -110,7 +110,7 @@ function onLongPressTimerFire()
   if m.isLongPressStarted
     'bs:disable-next-line
     if mc.isFunction(onLongPressUpdate) and not onLongPressUpdate(m.longPressKey)
-      m.logInfo("long press was cancelled by the onLongPressUpdate call")
+      m.log.info("long press was cancelled by the onLongPressUpdate call")
       if mc.isFunction(toggleLongPressTimer)
         toggleLongPressTimer(0)
       end if
@@ -118,10 +118,10 @@ function onLongPressTimerFire()
   else
     'bs:disable-next-line
     if mc.isFunction(onLongPressStart) and not onLongPressStart(m.longPressKey)
-      m.logInfo("long press was rejected by onLongPressStart call")
+      m.log.info("long press was rejected by onLongPressStart call")
       toggleLongPressTimer(0)
     else
-      m.logInfo("long press is accepted : starting for key ", m.longPressKey)
+      m.log.info("long press is accepted : starting for key ", m.longPressKey)
       m.isLongPressStarted = true
     end if
   end if

@@ -1,0 +1,16 @@
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+import "pkg:/source/roku_modules/mc/Tasks.brs"
+import "pkg:/source/roku_modules/mioc/MIOC.brs"
+import "pkg:/source/NodeClass.bs"
+
+@strict
+class Component extends NodeClass
+
+  @inject("styleManager")
+  private styleManager
+
+  function new(name, globalNode, top)
+    super(name, globalNode, top)
+  end function
+
+end class

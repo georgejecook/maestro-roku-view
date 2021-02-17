@@ -1,14 +1,14 @@
 
 function setNextView(nextView) as void
-  m.logInfo("onNextViewchange", mc.dv(m.top), "nextView", mc.dv(nextView))
+  m.log.info("onNextViewchange", mc.dv(m.top), "nextView", mc.dv(nextView))
   currentView = m.top.currentView
   if currentView <> invalid and currentView.isSamenode(nextView)
-    m.logInfo("ignoring update to same view - this should not happen")
+    m.log.info("ignoring update to same view - this should not happen")
     return
   end if
 
   if currentView <> invalid
-    m.logInfo("hiding the current view", currentView.subType(), ".", currentView.id)
+    m.log.info("hiding the current view", currentView.subType(), ".", currentView.id)
     hideView(currentView)
     currentView@.onRemovedFromAggregateView(m.top)
     currentView.isDisplayedInDynamicContainer = false
@@ -16,7 +16,7 @@ function setNextView(nextView) as void
   end if
 
   if nextView <> invalid
-    m.logInfo("has a new nextView - showing it now")
+    m.log.info("has a new nextView - showing it now")
     m.top.currentView = nextView
     nextView.visible = false
     nextView.isShown = false
@@ -39,6 +39,6 @@ function setNextView(nextView) as void
     end if
 
   else
-    m.logInfo("no currentView")
+    m.log.info("no currentView")
   end if
 end function

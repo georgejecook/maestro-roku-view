@@ -8,7 +8,7 @@ import "pkg:/source/roku_modules/mc/Utils.brs"
 
 function init() as void
   m.top.observeFieldScoped("_debugM", "onDebugMChange")
-  log.registerLogger("FocusManager")
+  m.log = new log.Logger("FocusManager")
   m.focusTimer = m.top.findNode("focusTimer")
   m.wasShown = false
   m.isKeyPressLocked = false
@@ -17,7 +17,7 @@ function init() as void
 end function
 
 function onDebugMChange()
-  m.logInfo("dumping m for debugging purposes")
+  m.log.info("dumping m for debugging purposes")
   m.top._m = m
 end function
 
@@ -27,13 +27,13 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function _setFocusOn(node, isForced = false) as void
-  ' m.logMethod("setFocusOn", node)
+  ' m.log.method("setFocusOn", node)
 
   if m.top.isLocked
     if isForced
-      m.logWarn("overriding setting m.locked focus (locked reason:", m.top.lockReason, ")")
+      m.log.warn("overriding setting m.locked focus (locked reason:", m.top.lockReason, ")")
     else
-      m.logWarn("cannot set focus, it is m.locked - reason :", m.top.lockReason)
+      m.log.warn("cannot set focus, it is m.locked - reason :", m.top.lockReason)
       return
     end if
   end if
@@ -44,12 +44,12 @@ function _setFocusOn(node, isForced = false) as void
     if isInScene(parents)
 
       if m.top.isLogging
-        m.logInfo("setting focus to ", node.subType(), ".", node.id)
+        m.log.info("setting focus to ", node.subType(), ".", node.id)
       end if
 
       _setFocusOnImpl(node, parents)
     else
-      m.logError("set focus to an off scene node! - in future this will set the focus to a backup-context node, to stop illegal focus scenarios")
+      m.log.error("set focus to an off scene node! - in future this will set the focus to a backup-context node, to stop illegal focus scenarios")
       _setFocusOnImpl(node, parents)
     end if
   end if
@@ -57,7 +57,7 @@ function _setFocusOn(node, isForced = false) as void
 end function
 
 function _unsetFocusOn(node)
-  m.logInfo("manualy unsetting focus on node")
+  m.log.info("manualy unsetting focus on node")
   node.setFocus(false)
 end function
 
@@ -66,10 +66,10 @@ function _setFocusLocked(node, reason = "")
   if node <> invalid
     _setFocusOn(node, true)
     m.lockedNode = node
-    m.logInfo("locking focus due to reason", reason)
+    m.log.info("locking focus due to reason", reason)
     m.focusTimer.control = "start"
   else
-    m.logInfo("unlocking focus - previous m.lock reason:", m.top.lockReason)
+    m.log.info("unlocking focus - previous m.lock reason:", m.top.lockReason)
     m.focusTimer.control = "stop"
     m.lockedNode = invalid
   end if
@@ -79,7 +79,7 @@ function _setFocusLocked(node, reason = "")
 end function
 
 function onFocusTimerFire()
-  ' m.logInfo("onFocusTimerFire")
+  ' m.log.info("onFocusTimerFire")
   if m.focusedNode <> invalid
     m.focusedNode.setFocus(true)
   end if
@@ -94,7 +94,7 @@ function _setFocusOnImpl(node, parents) as void
   currentNode = m.top.focusedNode
   isCurrentNode = false
   if (node = invalid and currentNode = invalid) or (node <> invalid and node.isSamenode(currentNode))
-    m.logInfo("setting focus on same node - ignoring")
+    m.log.info("setting focus on same node - ignoring")
     if node <> invalid
       if node.doesExist("isFocused")
         node.isFocused = true
@@ -109,7 +109,7 @@ function _setFocusOnImpl(node, parents) as void
   end if
 
   if currentNode <> invalid and not isCurrentNode
-    ' m.logInfo("setting focus on new node - unsetting focus on", currentNode.id)
+    ' m.log.info("setting focus on new node - unsetting focus on", currentNode.id)
     if currentNode.doesExist("isFocused") and currentNode.isFocused = true
       currentNode.isFocused = false
     end if
@@ -133,12 +133,12 @@ function _setFocusOnImpl(node, parents) as void
     end if
 
     if node.doesExist("isFocused")
-      ' m.logInfo("setting node as focused, and telling parents", node.id)
+      ' m.log.info("setting node as focused, and telling parents", node.id)
       node.isFocused = true
     end if
     setFieldOnNodes(parents, "isChildFocused", true)
   else
-    m.logError("set focus to invalid node! - in future this will set the focus to a backup-context node, to stop illegal focus scenarios")
+    m.log.error("set focus to invalid node! - in future this will set the focus to a backup-context node, to stop illegal focus scenarios")
   end if
 end function
 
@@ -148,7 +148,7 @@ function getParents(node)
   while (parent <> invalid)
 
     if parent.subType() = "ModelLocator"
-      m.logWarn("trying to focus on a view that is not yet on the view hierarchy")
+      m.log.warn("trying to focus on a view that is not yet on the view hierarchy")
       return []
     end if
     parents.push(parent)
@@ -161,13 +161,13 @@ end function
 function isValid(node)
 
   if mc.isUndefined(node)
-    m.logError("asked to focus on undefined node")
+    m.log.error("asked to focus on undefined node")
     return false
   else if node = invalid
-    m.logError("asked to focus on invalid node")
+    m.log.error("asked to focus on invalid node")
     return false
   else if type(node) <> "roSGNode"
-    m.logError("asked to focus on non rsgnode")
+    m.log.error("asked to focus on non rsgnode")
     return false
   end if
 
@@ -177,14 +177,14 @@ end function
 function isInScene(parents)
 
   if parents.count() = 0
-    m.logError("asked to focus on node with no parents")
+    m.log.error("asked to focus on node with no parents")
     return false
   end if
 
   lastParent = parents[parents.count() - 1]
 
   if not lastParent.isSubType("Scene")
-    m.logError("node is not in the scene")
+    m.log.error("node is not in the scene")
     return false
   end if
 
@@ -192,16 +192,16 @@ function isInScene(parents)
 end function
 
 function setFieldOnNodes(nodes, field, value)
-  ' m.logInfo("--------------------------------START")
+  ' m.log.info("--------------------------------START")
   for i = 0 to nodes.count() - 1
     node = nodes[i]
-    ' m.logInfo(i, "id", node.id)
+    ' m.log.info(i, "id", node.id)
     if node.doesExist(field) and node[field] <> value
-      ' m.logInfo(field, "node[field]", node[field], value)
+      ' m.log.info(field, "node[field]", node[field], value)
       node[field] = value
     end if
 
   end for
-  ' m.logInfo("--------------------------------END")
+  ' m.log.info("--------------------------------END")
 
 end function

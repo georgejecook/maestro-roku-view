@@ -4,7 +4,7 @@
 '  */
 
 function init()
-  m.logMethod("init")
+  m.log.method("init")
   m.top.currentItem = invalid
   m.top.isDestroyingChildViewsOnRemoval = false
   m.viewsByMenuItemId = {}
@@ -23,7 +23,7 @@ end function
 '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function changeCurrentItem(item)
-  m.logInfo("changeCurrentItem", item)
+  m.log.info("changeCurrentItem", item)
 
   if m.top.currentItem = invalid or not m.top.currentItem.isSameNode(item)
     m.top.currentItem = item
@@ -39,7 +39,7 @@ function changeCurrentItem(item)
       end if
       showView(view)
     else
-      m.logError("no view for item", m.top.currentItem)
+      m.log.error("no view for item", m.top.currentItem)
     end if
   end if
 end function
@@ -76,7 +76,7 @@ function addExistingView(existingView)
 end function
 
 function _createView(menuItemContent)
-  m.logMethod("createView menuItemContent.screenType", menuItemContent.screenType)
+  m.log.method("createView menuItemContent.screenType", menuItemContent.screenType)
   childView = createView(menuItemContent)
 
   if childView <> invalid
@@ -96,7 +96,7 @@ function _createView(menuItemContent)
     containerView.visible = false
     return containerView
   else
-    m.logError("menu item ", menuItemContent.id, " resulted in invalid view from createView. Was this view inteded to be added via addExistingView?")
+    m.log.error("menu item ", menuItemContent.id, " resulted in invalid view from createView. Was this view inteded to be added via addExistingView?")
     return invalid
   end if
 end function

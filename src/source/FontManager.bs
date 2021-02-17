@@ -1,0 +1,74 @@
+import "pkg:/source/roku_modules/log/LogMixin.brs"
+import "pkg:/source/roku_modules/mc/Utils.brs"
+import "pkg:/source/NodeClass.bs"
+
+class FontManager extends NodeClass
+
+  @field("array")
+  public families = []
+  private cachedFonts = {}
+  private fontRegistry
+
+  function new()
+    super("FontManager", invalid, invalid)
+    m.fontRegistry = m.createNode("roFontRegistry")
+  end function
+
+  public function loadFonts(fontFileNames)
+    m.families = []
+    m.cachedFonts = {}
+    if fontFileNames <> invalid and fontFileNames.count() > 0
+      for each filename in fontFileNames
+        if m.fontRegistry.register("pkg:/fonts/" + filename)
+          m.log.info("Registered", filename, "at path: pkg:/fonts/" + filename)
+        else
+          m.log.error("Could not register", filename, "at path: pkg:/fonts/" + filename)
+        end if
+      end for
+      m.families = m.fontRegistry.getFamilies().toArray()
+    end if
+  end function
+
+  ' /**
+  '  * @member getFontWithKey
+  '  * @memberof module:FontManager
+  '  * @instance
+  '  * @function
+  '  * @description will get a font with the text ${familyName}${size}${bold}${italic}
+  '  * @param {paramType} paramDescription
+  '  * @returns {returnType} returnDescription
+  '  */
+  function getFontWithKey(key as string) as dynamic
+    font = m.cachedFonts[key]
+    if font <> invalid
+      return font
+    end if
+    try
+      parts = name.split(",")
+      if parts <> invalid and parts.count() > 0 then
+        return m.getfont(part[0], parts[1].toInt(), parts[2] = "true", parts[3] = "true")
+      end if
+    catch error
+      m.log.error("could not get font", name, "error", error)
+    end try
+    return invalid
+  end function
+
+  function getFont(name as string, size as integer, bold = false as boolean, italic = false as boolean) as dynamic
+    if name = invalid or name.trim() = ""
+      return invalid
+    end if
+    key = `${name},${size},${bold},${italic}`
+    font = m.cachedFonts[key]
+
+    if font = invalid
+      font = m.fontRegistry.getFont(name, size, bold, italic)
+      if font <> invalid
+        m.cachedFonts[key] = font
+      end if
+    end if
+    ? ">>> font is "; font
+    return font
+  end function
+
+end class
