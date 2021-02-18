@@ -5,15 +5,7 @@ namespace tests
     private manager
 
     override function beforeEach()
-      m.manager = new FontManager()
-    end function
-
-    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    @describe("tests constructor")
-    ' +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-    @it("initializes")
-    function _()
+      m.manager = new FontManager(invalid, invalid)
     end function
 
     '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
