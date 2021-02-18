@@ -19,7 +19,7 @@ class FontManager extends NodeClass
     m.cachedFonts = {}
     if fontFileNames <> invalid and fontFileNames.count() > 0
       for each filename in fontFileNames
-        if m.fontRegistry.register("pkg:/fonts/" + filename)
+        if m.fontRegistry.register("pkg:/" + "fonts/" + filename)
           m.log.info("Registered", filename, "at path: pkg:/fonts/" + filename)
         else
           m.log.error("Could not register", filename, "at path: pkg:/fonts/" + filename)

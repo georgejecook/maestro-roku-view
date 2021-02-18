@@ -212,7 +212,8 @@ namespace animations
 
     private function createAnimationNode()
       m.node = createObject("roSGNode", "Animation")
-      m.node.id = `${m.target.id}_${m.name}_${animations.getAnimationKeyId()}`
+      'bs:disable-next-line
+      m.node.id = `${m.target.id}_${m.field}_${mv_animations_getAnimationKeyId()}`
       m.node.duration = m.duration
       m.node.easeFunction = m.easeFunction
       m.node.repeat = m.repeat
@@ -228,7 +229,8 @@ namespace animations
 
     function _createInterpolator(interpolatorType)
       m.interpolator = createObject("roSGNode", interpolatorType)
-      m.interpolator.id = `${m.target.id}_${m.field}_ ${animations.getAnimationKeyId()}`
+      'bs:disable-next-line
+      m.interpolator.id = `${m.target.id}_${m.field}_${mv_animations_getAnimationKeyId()}`
       m.interpolator.fieldToInterp = `${m.target.id}.${m.field}`
       m.setKeys([0, 1], [m.fromValue, m.toValue])
     end function
@@ -241,7 +243,8 @@ namespace animations
     function new(target, parallelAnimations = invalid, repeat = false)
       super("ParallelAnimation", target)
       m.node = createObject("roSGNode", "ParallelAnimation")
-      m.node.id = `${m.target.id}_${m.name}_${animations.getAnimationKeyId()}`
+      'bs:disable-next-line
+      m.node.id = `${m.target.id}_${m.field}_${mv_animations_getAnimationKeyId()}`
       m.setRepeat(repeat)
       if parallelAnimations <> invalid
         m.addAnimations(parallelAnimations)
