@@ -57,23 +57,23 @@ class NodeClass
   '++ Net helpers
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  private function get(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("GET", url, params, callback = invalid, headers, otherArgs)
+  private function get(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("GET", url, params, callback, headers, otherArgs)
   end function
 
-  private function post(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("POST", url, params, callback = invalid, headers, otherArgs)
+  private function post(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("POST", url, params, callback, headers, otherArgs)
   end function
 
-  private function delete(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("DELETE", url, params, callback = invalid, headers, otherArgs)
+  private function delete(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("DELETE", url, params, callback, headers, otherArgs)
   end function
 
-  private function put(url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("PUT", url, params, callback = invalid, headers, otherArgs)
+  private function put(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+    return m.executeRequest("PUT", url, params, callback, headers, otherArgs)
   end function
 
-  private function executeRequest(method, url as string, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
+  private function executeRequest(method, url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
     args = {
       "method": method
       "url": url
@@ -81,7 +81,7 @@ class NodeClass
       "headers": headers
       "otherArgs": otherArgs
     }
-    return m.createTask("mc_RequestTask", args, callback)
+    return m.createTask("mc_RequestTask", { args: args }, callback)
   end function
 
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
