@@ -2,31 +2,16 @@ import "pkg:/source/roku_modules/log/LogMixin.brs"
 import "pkg:/source/roku_modules/mc/Utils.brs"
 import "pkg:/source/NodeClass.bs"
 
+@node("FontManager", "Node")
 class FontManager extends NodeClass
 
-  @field("array")
-  public families = []
+  @field("assocarray")
+  public settings = {}
+
   private cachedFonts = {}
-  private fontRegistry
 
-  function new()
+  function new(globalNode, top)
     super("FontManager", invalid, invalid)
-    m.fontRegistry = m.createNode("roFontRegistry")
-  end function
-
-  public function loadFonts(fontFileNames)
-    m.families = []
-    m.cachedFonts = {}
-    if fontFileNames <> invalid and fontFileNames.count() > 0
-      for each filename in fontFileNames
-        if m.fontRegistry.register("pkg:/" + "fonts/" + filename)
-          m.log.info("Registered", filename, "at path: pkg:/fonts/" + filename)
-        else
-          m.log.error("Could not register", filename, "at path: pkg:/fonts/" + filename)
-        end if
-      end for
-      m.families = m.fontRegistry.getFamilies().toArray()
-    end if
   end function
 
   ' /**
@@ -43,31 +28,37 @@ class FontManager extends NodeClass
     if font <> invalid
       return font
     end if
-    try
-      parts = name.split(",")
-      if parts <> invalid and parts.count() > 0 then
-        return m.getfont(part[0], parts[1].toInt(), parts[2] = "true", parts[3] = "true")
-      end if
-    catch error
-      m.log.error("could not get font", name, "error", error)
-    end try
+    parts = key.split(",")
+
+    if parts <> invalid and parts.count() = 2
+      return m.getfont(parts[0], parts[1].toInt())
+    end if
+
+    m.log.error("could not get font", key, "error", error)
     return invalid
   end function
 
-  function getFont(name as string, size as integer, bold = false as boolean, italic = false as boolean) as dynamic
+  function getFont(name as string, size as integer) as dynamic
     if name = invalid or name.trim() = ""
       return invalid
     end if
-    key = `${name},${size},${bold},${italic}`
+    key = `${name},${size}`
     font = m.cachedFonts[key]
 
     if font = invalid
-      font = m.fontRegistry.getFont(name, size, bold, italic)
+      font = CreateObject("roSGNode", "Font")
+      if name.instr(".ttf") <> -1
+        font.uri = "pkg:" + "/fonts/" + name
+      else
+        'it's a system font
+        font.uri = "font:" + name + "SystemFont"
+      end if
+      font.size = size
+
       if font <> invalid
         m.cachedFonts[key] = font
       end if
     end if
-    ? ">>> font is "; font
     return font
   end function
 

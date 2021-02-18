@@ -21,11 +21,11 @@ class NodeClass
   '++ creation
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  function createSGNode(nodeType, parent = invalid, id = invalid, args = invalid)
+  private function createSGNode(nodeType, parent = invalid, id = invalid, args = invalid)
     return mc.createSGNode(nodeType, parent, id, args)
   end function
 
-  function createNode(nodeType)
+  private function createNode(nodeType)
     return mc.createNode(nodeType)
   end function
 

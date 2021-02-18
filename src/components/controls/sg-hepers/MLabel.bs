@@ -9,24 +9,8 @@ function init()
 end function
 
 function onFontKeyChange()
-
-  if m.top.fontKey <> invalid
-    parts = m.top.fontKey.split(",")
-    if parts <> invalid and parts.count() > 0
-
-      if parts.count() = 4 and m.global.fontManager <> invalid
-        fm = new FontManager()
-        m.top.font = fm.getFontWithKey(m.top.fontKey)
-      else
-        m.top.font = "font:" + parts[0] + "SystemFont"
-      end if
-      if parts.count() > 1
-        if m.top.font <> invalid
-          m.top.font.size = parts[1].toInt()
-        end if
-      end if
-    end if
-
+  if m.top.fontKey <> invalid and m.global.fontManager <> invalid
+    m.top.font = m.global.fontManager@.getFontWithKey(m.top.fontKey)
   end if
 end function
 

@@ -17,10 +17,11 @@
         "mioc": "/home/george/hope/open-source/maestro/maestro-roku-ioc"
     },
     "devDependencies": {
-        "rooibos-roku": "file:../../rooibos/bsc-plugin",
-        "brighterscript": "^0.30.6",
+        "brighterscript": "file:../../vsc/brighterscript",
+        "fs-extra": "^9.1.0",
         "maestro-roku-bsc-plugin": "file:../maestro-roku-bsc-plugin",
         "rimraf": "^3.0.2",
+        "rooibos-roku": "file:../../rooibos/bsc-plugin",
         "yargs": "^16.2.0"
     },
     "repository": {
