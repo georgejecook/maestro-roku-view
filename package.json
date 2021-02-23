@@ -1,6 +1,6 @@
 {
     "name": "maestro-roku-view",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "A development platform for building roku channels in brighterscript. View Library",
     "directories": {
         "doc": "docs"
@@ -12,16 +12,16 @@
         "dist/**/!(*.spec.)*"
     ],
     "dependencies": {
-        "log": "/home/george/hope/open-source/maestro/roku-log",
-        "mc": "/home/george/hope/open-source/maestro/maestro-roku-core",
-        "mioc": "/home/george/hope/open-source/maestro/maestro-roku-ioc"
+        "log": "npm:roku-log@^0.4.1",
+        "mc": "npm:maestro-roku-core@^0.4.2",
+        "mioc": "npm:maestro-roku-ioc@^0.4.1"
     },
     "devDependencies": {
-        "brighterscript": "file:../../vsc/brighterscript",
+        "brighterscript": "^0.32.2",
         "fs-extra": "^9.1.0",
-        "maestro-roku-bsc-plugin": "file:../maestro-roku-bsc-plugin",
+        "maestro-roku-bsc-plugin": "^0.2.6",
         "rimraf": "^3.0.2",
-        "rooibos-roku": "file:../../rooibos/bsc-plugin",
+        "rooibos-roku": "^4.1.0",
         "yargs": "^16.2.0"
     },
     "repository": {
@@ -55,7 +55,7 @@
     },
     "scripts": {
         "local": "ts-node scripts/install-maestro-local.js",
-        "remote": "ts-node scripts/install-maestro-remote.js",
+        "remote": "ts-node scripts/install-maestro-npm.js",
         "build": "node scripts/run.js && ts-node scripts/move-generated-files.js",
         "build-remote": "npm run remote && npm run build",
         "build-local": "npm run local && npm run build",

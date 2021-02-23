@@ -13,9 +13,9 @@ process.chdir(thisProjectRootPath);
 let packageJson = JSON.parse(fsExtra.readFileSync('package.json').toString());
 
 let packages = {
-    'mc': 'npm:maestro-roku-core@^0.3.8',
-    'mioc': 'npm:maestro-roku-ioc@^0.3.4',
-    'log': 'npm:roku-log@^0.3.1'
+    'mc': 'npm:maestro-roku-core@^0.4.2',
+    'mioc': 'npm:maestro-roku-ioc@^0.4.1',
+    'log': 'npm:roku-log@^0.4.1'
 };
 
 for (let packageName in packages) {
