@@ -126,7 +126,7 @@ function onGainedFocus(isSelfFocused)
       m.vm.onGainedFocus(isSelfFocused)
     end if
 
-    if mc.isFunction(mx_onFocusIdChange) <> invalid
+    if mc.isFunction(mx_onFocusIdChange)
       'bs:disable-next-line
       mx_onFocusIdChange(m.vm.focusId)
     end if
