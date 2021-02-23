@@ -39,4 +39,17 @@ class NodeClass extends mc.BaseClass
     return mioc.setClassInstance(instance)
   end function
 
+
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  '++ scope support
+  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  protected function getTopField(fieldName)
+    return mc.getMField("top")[fieldName]
+  end function
+
+  protected function getMField(fieldName)
+    return mc.getMField(fieldName)
+  end function
+
 end class
