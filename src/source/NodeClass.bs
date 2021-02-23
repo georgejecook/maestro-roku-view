@@ -1,115 +1,42 @@
 import "pkg:/source/roku_modules/mioc/MIOC.brs"
 import "pkg:/source/roku_modules/mc/Tasks.brs"
 import "pkg:/source/roku_modules/mc/Utils.brs"
+import "pkg:/source/roku_modules/mc/BaseClass.brs"
 
 @strict
-class NodeClass
+class NodeClass extends mc.BaseClass
 
-  private top
-  private global
-  private name
-  private log
+  protected top
+  protected global
 
-  private function new(name, globalNode, top)
-    m.log = new log.Logger(name)
-    m.name = name
+  protected function new(name, globalNode, top)
+    super(name)
     m.global = globalNode
     m.top = top
-  end function
-
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  '++ creation
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-  private function createSGNode(nodeType, parent = invalid, id = invalid, args = invalid)
-    return mc.createSGNode(nodeType, parent, id, args)
-  end function
-
-  private function createNode(nodeType)
-    return mc.createNode(nodeType)
   end function
 
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   '++ ioc wrappers
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  private function getInstance(name)
+  protected function getInstance(name)
     return mioc.getInstance(name)
   end function
 
-  private function setInstance(field, instance)
+  protected function setInstance(field, instance)
     mioc.setInstance(field, instance)
   end function
 
-  private function getClassInstance(classname, args = [], createTypeIfNotPresent = true, storeInstance = true)
+  protected function getClassInstance(classname, args = [], createTypeIfNotPresent = true, storeInstance = true)
     return mioc.getClassInstance(classname, args, createTypeIfNotPresent, storeInstance)
   end function
 
-  private function createClassInstance(classname, args = [])
+  protected function createClassInstance(classname, args = [])
     return mioc.createClassInstance(classname, args)
   end function
 
-  private function setClassInstance(instance)
+  protected function setClassInstance(instance)
     return mioc.setClassInstance(instance)
-  end function
-
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  '++ Net helpers
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-  private function get(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("GET", url, params, callback, headers, otherArgs)
-  end function
-
-  private function post(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("POST", url, params, callback, headers, otherArgs)
-  end function
-
-  private function delete(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("DELETE", url, params, callback, headers, otherArgs)
-  end function
-
-  private function put(url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    return m.executeRequest("PUT", url, params, callback, headers, otherArgs)
-  end function
-
-  private function executeRequest(method, url, params = invalid, callback = invalid, headers = invalid, otherArgs = invalid)
-    args = {
-      "method": method
-      "url": url
-      "params": params
-      "headers": headers
-      "otherArgs": otherArgs
-    }
-    return m.createTask("mc_RequestTask", { args: args }, callback)
-  end function
-
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  '++ task wrappers, for easy stubbing
-  '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-  private function observeNodeField(node, fieldName, callback, sendMode = "value", once = false)
-    mc.tasks.observeNodeField(node, fieldName, callback, sendMode, once, m)
-  end function
-
-  private function unobserveNodeField(node, fieldName, callback = invalid)
-    mc.tasks.cleanNodeObserver(node, fieldName)
-  end function
-
-  private function waitAFrame(callback, duration = 0.01, sendMode = "none")
-    mc.tasks.waitAFrame(callback, duration, sendMode, m)
-  end function
-
-  private function cancelWaitTimer(timer)
-    mc.tasks.cancelWaitTimer(timer)
-  end function
-
-  private function createTask(taskType, fields, callback = invalid, isRunning = true, sendMode = "value", fieldName = "output")
-    return mc.tasks.createTask(taskType, fields, callback, isRunning, sendMode, m, fieldName)
-  end function
-
-  private function cancelTask(task)
-    mc.tasks.cancelTask(task)
   end function
 
 end class

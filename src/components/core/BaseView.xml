@@ -9,7 +9,7 @@
     
     <!-- this indicates that our framework initialization,
       which is distinct from init, has completed -->
-      <field id="isInitialized"  type="boolean" value="false"/>
+      <field id="m"  type="boolean" value="false"/>
       <field id="__debugM"  type="boolean" alwaysNotify="true"/>
       
       <field

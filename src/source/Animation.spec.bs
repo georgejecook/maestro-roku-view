@@ -201,5 +201,38 @@ namespace tests
       m.assertTrue(animations.utils.getDelta(fromValue, toValue) = expected)
     end function
 
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    @describe("kenburns")
+    '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @it("configures the animations correctly on init")
+    function _()
+      target = createObject("roSGNode", "Group")
+      target.id = "t1"
+      kb = new animations.KenBurns(target, 1, 1.3, 1)
+      m.assertEqual(kb.delay, 1)
+      m.assertEqual(kb.maxScale, 1.3)
+      m.assertNotInvalid(kb.sAnim)
+      m.assertNotInvalid(kb.mAnim)
+      m.assertEqual(kb.target, target)
+      m.assertEqual(kb.sAnim.target, target)
+      m.assertEqual(kb.sAnim.target, target)
+    end function
+
+    @nocatch
+    @it("generated some kenburns values and applies them on start")
+    function _()
+      target = createObject("roSGNode", "Group")
+      target.id = "t1"
+      target.scale = [0, 0]
+      target.translation = [0, 0]
+
+      kb = new animations.KenBurns(target, 1, 1.3, 1)
+      kb.start()
+      kb.stop()
+      m.assertNotEqual(target.scale, [1, 1])
+      m.assertNotEqual(target.translation, [0, 0])
+    end function
+
   end class
 end namespace

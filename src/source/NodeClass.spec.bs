@@ -62,7 +62,7 @@ namespace tests
 
       m.expectOnce(m.nc, "executeRequest", ["DELETE", "url", "params", "callback", "headers", "otherArgs"], result)
 
-      m.assertEqual(m.nc.delete("url", "params", "callback", "headers", "otherArgs"), result)
+      m.assertEqual(m.nc.del("url", "params", "callback", "headers", "otherArgs"), result)
     end function
 
     '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

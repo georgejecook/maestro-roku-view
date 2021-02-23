@@ -1,11 +1,6 @@
 {
   "rootDir": "src",
-  "files": [
-    "manifest",
-    "source/**/*.*",
-    "components/**/*.*",
-    "!**/*.spec.*"
-  ],
+  "files": ["manifest", "source/**/*.*", "components/**/*.*", "!**/*.spec.*"],
   "autoImportComponentScript": true,
   "createPackage": false,
   "stagingFolderPath": "dist",
@@ -15,15 +10,14 @@
     },
     {
       "src": "**/WhiteList.xml",
-      "codes": [
-        1067
-      ]
+      "codes": [1067]
     },
     1120
   ],
   "emitDefinitions": true,
-  "plugins": [
-    "maestro-roku-bsc-plugin"
-  ],
-  "sourceMap": true
+  "plugins": ["maestro-roku-bsc-plugin"],
+  "sourceMap": true,
+  "maestro": {
+    "excludeFilters": ["**/roku_modules/**/*", "**/rooibos/**/*"]
+  }
 }

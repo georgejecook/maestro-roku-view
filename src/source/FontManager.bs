@@ -23,6 +23,7 @@ class FontManager extends NodeClass
   '  * @param {paramType} paramDescription
   '  * @returns {returnType} returnDescription
   '  */
+  @nodefunc
   function getFontWithKey(key as string) as dynamic
     font = m.cachedFonts[key]
     if font <> invalid
@@ -38,6 +39,7 @@ class FontManager extends NodeClass
     return invalid
   end function
 
+  @nodefunc
   function getFont(name as string, size as integer) as dynamic
     if name = invalid or name.trim() = ""
       return invalid

@@ -2,24 +2,24 @@ import "pkg:/source/roku_modules/log/LogMixin.brs"
 import "pkg:/source/roku_modules/mc/Utils.brs"
 
 namespace animations.utils
-  function fadeTo(target, duration, toValue, start = true)
-    anim = new animations.Fade(target, duration, target.opacity, toValue)
+  function fadeTo(target, duration, toValue, start = true, delay = 0)
+    anim = new animations.Fade(target, duration, target.opacity, toValue, delay = 0)
     if start
       anim.start()
     end if
     return anim
   end function
 
-  function scaleTo(target, duration, toValue, start = true)
-    anim = new animations.Scale(target, duration, target.scale, toValue)
+  function scaleTo(target, duration, toValue, start = true, delay = 0)
+    anim = new animations.Scale(target, duration, target.scale, toValue, delay = 0)
     if start
       anim.start()
     end if
     return anim
   end function
 
-  function moveTo(target, duration, toValue, start = true)
-    anim = new animations.Move(target, duration, target.translation, toValue)
+  function moveTo(target, duration, toValue, start = true, delay = 0)
+    anim = new animations.Move(target, duration, target.translation, toValue, delay)
     if start
       anim.start()
     end if
@@ -91,7 +91,7 @@ namespace animations
     private field = invalid
     public duration = 0.5
 
-    function new(target, field, duration, fromValue, toValue, name = "AbstractAnimation")
+    function new(target, field, duration, fromValue, toValue, name = "AbstractAnimation", delay = 0)
       super(name, target)
       if target = invalid or target.id = invalid or target.id = ""
         m.log.error("target must be a valid node with an id")
@@ -102,6 +102,7 @@ namespace animations
       m.fromValue = fromValue
       m.toValue = toValue
       m.field = field
+      m.delay = delay
       m.createAnimationNode()
     end function
 
@@ -167,7 +168,7 @@ namespace animations
     '  * @memberof module:animations.AbstractAnimation
     '  * @instance
     '  * @function
-    '  * @description estimates how much time is required to complete the animation given the current delta; particularly useful when having to switch destination on the fly.
+    '  * @description estimates how much time is required to complete the animation given the current delta particularly useful when having to switch destination on the fly.
     '  * @param {any} toValue - the final value
     '  * @param {float} stepSpeed - how long the animation would normally take
     '  * @param {string} stepUnit - "pixel" (30 pixels), "float", 1
@@ -212,8 +213,9 @@ namespace animations
 
     private function createAnimationNode()
       m.node = createObject("roSGNode", "Animation")
+      animId = animations.getAnimationKeyId()
       'bs:disable-next-line
-      m.node.id = `${m.target.id}_${m.field}_${animations.getAnimationKeyId()}`
+      m.node.id = `${m.target.id}_${m.field}_${animId}`
       m.node.duration = m.duration
       m.node.easeFunction = m.easeFunction
       m.node.repeat = m.repeat
@@ -229,8 +231,9 @@ namespace animations
 
     function _createInterpolator(interpolatorType)
       m.interpolator = createObject("roSGNode", interpolatorType)
+      animId = animations.getAnimationKeyId()
       'bs:disable-next-line
-      m.interpolator.id = `${m.target.id}_i_${m.field}_${animations.getAnimationKeyId()}`
+      m.interpolator.id = `${m.target.id}_i_${m.field}_${animId}`
       m.interpolator.fieldToInterp = `${m.target.id}.${m.field}`
       m.setKeys([0, 1], [m.fromValue, m.toValue])
     end function
@@ -239,12 +242,15 @@ namespace animations
 
   class Parallel extends AnimationBase
     public animations
+    public delay = 0
 
-    function new(target, parallelAnimations = invalid, repeat = false)
+    function new(target, parallelAnimations = invalid, repeat = false, delay = 0)
       super("ParallelAnimation", target)
       m.node = createObject("roSGNode", "ParallelAnimation")
+      animId = animations.getAnimationKeyId()
+      m.delay = delay
       'bs:disable-next-line
-      m.node.id = `${m.target.id}_${m.field}_${animations.getAnimationKeyId()}`
+      m.node.id = `${m.target.id}_${m.field}_${animId}`
       m.setRepeat(repeat)
       if parallelAnimations <> invalid
         m.addAnimations(parallelAnimations)
@@ -261,6 +267,9 @@ namespace animations
       for each animation in parallelAnimations
         if animation <> invalid and type(animation.node) = "roSGNode"
           animation.parentAnimation = m.node
+          if m.delay <> 0
+            animation.setDelay(m.delay)
+          end if
           m.node.appendChild(animation.node)
           m.animations.push(animation)
         end if
@@ -287,8 +296,8 @@ namespace animations
   '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   class Scale extends AbstractAnimation
-    function new(target, duration, fromValue, toValue)
-      super(target, "scale", duration, fromValue, toValue, "ScaleAnimation")
+    function new(target, duration, fromValue, toValue, delay = 0)
+      super(target, "scale", duration, fromValue, toValue, "ScaleAnimation", delay)
     end function
 
     override function createInterpolator()
@@ -301,8 +310,8 @@ namespace animations
   end class
 
   class Fade extends AbstractAnimation
-    function new(target, duration, fromValue, toValue)
-      super(target, "opacity", duration, fromValue, toValue, "FadeAnimation")
+    function new(target, duration, fromValue, toValue, delay = 0)
+      super(target, "opacity", duration, fromValue, toValue, "FadeAnimation", delay)
     end function
 
     override function createInterpolator()
@@ -315,8 +324,8 @@ namespace animations
   end class
 
   class Move extends AbstractAnimation
-    function new(target, duration, fromValue, toValue)
-      super(target, "translation", duration, fromValue, toValue, "MoveAnimation")
+    function new(target, duration, fromValue, toValue, delay = 0)
+      super(target, "translation", duration, fromValue, toValue, "MoveAnimation", delay)
     end function
 
     override function createInterpolator()
@@ -332,8 +341,8 @@ namespace animations
     private wAnim
     private hAnim
 
-    function new(target, duration, fromValue, toValue)
-      super(target, "size", duration, fromValue, toValue, "SizeAnimation")
+    function new(target, duration, fromValue, toValue, delay = 0)
+      super(target, "size", duration, fromValue, toValue, "SizeAnimation", delay)
       m.wAnim = new animations.FloatValue(target, "width", duration, fromValue[0], toValue[0])
       m.hAnim = new animations.FloatValue(target, "height", duration, fromValue[1], toValue[1])
       m.pAnim = new animations.Parallel(target, [
@@ -397,6 +406,151 @@ namespace animations
 
     override function unobserveFraction()
       m.wAnim.unobserveFraction()
+    end function
+  end class
+
+  class KenBurns extends AbstractAnimation
+    private sAnim
+    private mAnim
+    private maxScale
+
+    function new(target, duration, maxScale, delay = 0)
+      super(target, "size", duration, invalid, invalid, "SizeAnimation", delay)
+      m.maxScale = maxScale
+      m.sAnim = animations.utils.scaleTo(target, duration, target.scale, false, delay)
+      m.mAnim = animations.utils.moveTo(target, duration, target.translation, false, delay)
+      m.pAnim = new animations.Parallel(target, [
+        m.sAnim,
+        m.mAnim
+      ])
+      m.node = m.pAnim.node
+    end function
+
+    private override function createAnimationNode()
+    end function
+
+    override function setEaseFunction(easeFunction)
+      m.easeFunction = easeFunction
+      m.sAnim.setEaseFunction(easeFunction)
+      m.mAnim.setEaseFunction(easeFunction)
+    end function
+
+    override function setKeys(keys, keyValues)
+    end function
+
+    override function setDuration(duration)
+      m.sAnim.setDuration(duration)
+      m.mAnim.setDuration(duration)
+      m.duration = duration
+    end function
+
+    override function setDelay(delay)
+      m.sAnim.setDelay(delay)
+      m.mAnim.setDelay(delay)
+    end function
+
+    override function animateTo(toValue, duration = invalid)
+      m.sAnim.animateTo(toValue[0], duration)
+      m.mAnim.animateTo(toValue[1], duration)
+    end function
+
+    override function animateToWithSpeed(toValue, stepSpeed, stepUnit = "pixel")
+      m.sAnim.animateToWithSpeed(toValue[0], stepSpeed, stepUnit)
+      m.mAnim.animateToWithSpeed(toValue[1], stepSpeed, stepUnit)
+    end function
+
+    override function setFromToValue(fromValue, toValue)
+    end function
+
+    override function observeFraction(callback, scope = invalid)
+      m.sAnim.observeFraction(callback, scope)
+    end function
+
+    override function unobserveFraction()
+      m.sAnim.unobserveFraction()
+    end function
+
+
+    function ceil(number)
+      return - int(- number)
+    end function
+
+    function floor(number)
+      return int(number)
+    end function
+
+    override function start()
+      super.start()
+      endScale = mc.clamp(rnd(0) + 1, 1.1, m.maxScale)
+      startScale = mc.clamp(rnd(0) + 1, 1.1, m.maxScale)
+      fromScale = [
+        startScale,
+        startScale
+      ]
+      toScale = [
+        endScale,
+        endScale
+      ]
+      m.target.scale = fromScale
+      m.sAnim.setFromToValue(fromScale, toScale)
+      corners = [
+        {
+          x: 0,
+          y: 0
+        },
+        {
+          x: 1,
+          y: 0
+        },
+        {
+          x: 0,
+          y: 1
+        },
+        {
+          x: 1,
+          y: 1
+        }
+      ]
+      if m.target.width <> invalid
+        w = m.target.width
+      else
+        w = 1
+      end if
+      if m.target.height <> invalid
+        h = m.target.height
+      else
+        h = 1
+      end if
+
+      sw = w - h * startScale
+      sh = h - w * startScale
+      xAmount = (rnd(sw) - sw / 2) * 0.25
+      yAmount = (rnd(sh) - sh / 2) * 0.25
+      'Pick the first corner. Remove it from the array
+      choice = m.floor(rnd(3))
+      sCorner = corners[choice]
+      'Pick the second corner from the subset
+      corners.delete(choice)
+      eCorner = corners[m.floor(rnd(2))]
+      fromPos = [
+        sCorner.x * xAmount
+        sCorner.y * yAmount
+      ]
+      sw = w - h * endScale
+      sh = h - w * endScale
+      xAmount = (rnd(sw) - sw / 2) * 0.25
+      yAmount = (rnd(sh) - sh / 2) * 0.25
+      'Pick the first corner. Remove it from the array
+      choice = m.floor(rnd(3))
+      sCorner = corners[choice]
+
+      toPos = [
+        eCorner.x * xAmount
+        eCorner.y * yAmount
+      ]
+      fromPos = [mc.clamp(fromPos[0], -30, 0), mc.clamp(fromPos[1], -30, 0)]
+      m.target.translation = fromPos
+      m.mAnim.setFromToValue(fromPos, toPos)
     end function
   end class
 
