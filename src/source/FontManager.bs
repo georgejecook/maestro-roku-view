@@ -35,7 +35,7 @@ class FontManager extends NodeClass
       return m.getfont(parts[0], parts[1].toInt())
     end if
 
-    m.log.error("could not get font", key, "error", error)
+    m.log.warn("could not get font", key, "error", error)
     return invalid
   end function
 

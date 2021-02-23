@@ -13,7 +13,9 @@ class BaseView extends NodeClass
   @inject("styleManager")
   protected styleManager
 
+  @field("string")
   public state = "none"
+
   protected isFocused = false
   protected isShown = false
   protected isLongPressStarted = false
@@ -24,7 +26,6 @@ class BaseView extends NodeClass
   end function
 
   function initialize()
-    super.initialize()
     m.log.method("initialize", m.name)
     m.state = "initialized"
   end function

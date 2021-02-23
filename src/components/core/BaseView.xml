@@ -6,6 +6,7 @@
     
     <field id="name"  type="string" value=""/>
     <field id="isShown"  type="boolean" value="false"/>
+    <field id="isInitialized"  type="boolean" value="false"/>
     
     <!-- this indicates that our framework initialization,
       which is distinct from init, has completed -->
@@ -21,7 +22,6 @@
         id='isDisplayedInScreenPicker'
         type='boolean'
         value='false' />
-
 
     <!-- focus support -->
     <field id="isFocusable" type="boolean" value="true" alwaysNotify="false"/>
